@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+dashboard/.screenshots/
+test-results/
+playwright-report/
+*.log
+.agents/
+.claude/
+.DS_Store

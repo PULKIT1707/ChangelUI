@@ -1,0 +1,39 @@
+@import "tailwindcss" source("..");
+@import "changelui/theme.css";
+@import "changelui/themes.css";
+@source "../../src";
+@source "../../templates";
+@custom-variant dark (&:where(.dark, .dark *, [data-theme=dark], [data-theme=dark] *));
+
+/* Dashboard-only syntax colors for sugar-high (code-block.tsx), built from library tokens so
+   they follow the theme. The *-text tokens are the contrast-tested text variants. */
+.pui-code {
+  color: var(--pui-foreground);
+  --sh-class: var(--pui-info-text);
+  --sh-identifier: var(--pui-foreground);
+  --sh-sign: var(--pui-muted-foreground);
+  --sh-property: var(--pui-info-text);
+  --sh-entity: var(--pui-primary-text);
+  --sh-jsxliterals: var(--pui-foreground);
+  --sh-string: var(--pui-success-text);
+  --sh-keyword: var(--pui-danger-text);
+  --sh-comment: var(--pui-muted-foreground);
+}
+
+/* Poster mode (lazy-mini.tsx): idle gallery minis hold their CSS animations on the current frame
+   until their card is hovered or focused. */
+[data-poster="paused"] *,
+[data-poster="paused"] *::before,
+[data-poster="paused"] *::after {
+  animation-play-state: paused !important;
+}
+/* Theme presets restyle type too (themes.css sets --pui-font-*). */
+@layer base {
+  body {
+    font-family: var(--pui-font-sans);
+  }
+  h1,
+  h2 {
+    font-family: var(--pui-font-display);
+  }
+}

@@ -1,0 +1,81 @@
+// The entries shipped in 1.0.0, per category. Adding an entry needs no change here; removing or
+// moving one of these is a breaking change, so test/entries.test.ts (AC-1), check-dist and
+// `npm run remove` all refuse it.
+import type { Category } from "./entries.ts";
+
+export const RELEASED_ENTRIES: Readonly<Record<Category, readonly string[]>> = {
+  components: [
+    "accordion",
+    "alert",
+    "avatar",
+    "badge",
+    "button",
+    "card",
+    "checkbox",
+    "chip",
+    "copy-button",
+    "dialog",
+    "dock",
+    "drawer",
+    "dropdown-menu",
+    "icon-button",
+    "input",
+    "kbd",
+    "popover",
+    "progress",
+    "radio-group",
+    "rating",
+    "ripple-button",
+    "segmented-control",
+    "separator",
+    "shimmer-button",
+    "skeleton",
+    "slider",
+    "spinner",
+    "switch",
+    "tabs",
+    "textarea",
+    "theme-toggle",
+    "toast",
+    "tooltip",
+  ],
+  text: [
+    "gradient-text",
+    "highlighter",
+    "number-ticker",
+    "scramble-text",
+    "text-reveal",
+    "text-shimmer",
+    "typing-text",
+    "word-rotate",
+  ],
+  effects: [
+    "border-beam",
+    "magnetic",
+    "marquee",
+    "orbiting-circles",
+    "reveal",
+    "scroll-progress",
+    "shine-border",
+    "smooth-cursor",
+    "spotlight-card",
+    "stagger",
+    "tilt-card",
+  ],
+  backgrounds: ["aurora-background", "dot-pattern", "grid-pattern", "meteors", "particles", "ripple"],
+  // Added after 1.0.0 (charts-roadmap), so nothing here is released yet.
+  charts: [],
+  hooks: [
+    "cn",
+    "theme-script",
+    "use-click-outside",
+    "use-controllable-state",
+    "use-copy-to-clipboard",
+    "use-focus-trap",
+    "use-media-query",
+    "use-mouse-position",
+  ],
+};
+
+/** Every released name, in category order. */
+export const RELEASED_NAMES: readonly string[] = Object.values(RELEASED_ENTRIES).flat();

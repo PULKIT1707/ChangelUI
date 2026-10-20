@@ -1,0 +1,29 @@
+{
+  "name": "changelui-consumer-react18-css",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Consumer B (design 12.4): React 18 + motion 11.11.17 + styles.css without Tailwind (Mode 2), node16 resolution, ESM and CJS SSR smoke. scripts/consumer-test.ts rewrites changelui to file:<tarball>.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "preview": "vite preview",
+    "ssr": "node ssr-esm.mjs && node ssr-cjs.cjs"
+  },
+  "dependencies": {
+    "changelui": "file:../../..",
+    "motion": "11.11.17",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "6.1.2",
+    "typescript": "5.9.3",
+    "vite": "8.3.4"
+  },
+  "overrides": {
+    "framer-motion": "11.11.17"
+  }
+}

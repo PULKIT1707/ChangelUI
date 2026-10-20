@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es2022",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "module": "node16",
+    "moduleResolution": "node16",
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "types": []
+  },
+  "include": ["src"]
+}

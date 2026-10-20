@@ -1,0 +1,667 @@
+/*
+ * ChangelUI tokens (design 5.10).
+ * Block order is fixed and enforced by test/tokens.test.ts:
+ *   1. :root                              constants + light values (no color-scheme)
+ *   2. .light, [data-theme="light"]       light values + color-scheme: light
+ *   3. .dark, [data-theme="dark"]         dark values + color-scheme: dark
+ *   4. derived block (incl. [data-pui-scope]) every token built from var(--pui-*)
+ * Raw values are --pui-*; Tailwind keys add a pui- segment (bg-pui-primary, rounded-pui-md).
+ */
+
+:root {
+  --pui-radius: 0.625rem;
+  --pui-radius-full: 9999px;
+
+  --pui-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --pui-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --pui-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --pui-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --pui-ease-in-quint: cubic-bezier(0.64, 0, 0.78, 0);
+  --pui-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  --pui-overlay-blur: 0px;
+  --pui-surface-blur: 0px;
+
+  --pui-font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --pui-font-display: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --pui-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  --pui-duration-instant: 80ms;
+  --pui-duration-fast: 120ms;
+  --pui-duration-base: 200ms;
+  --pui-duration-slow: 320ms;
+  --pui-duration-page: 450ms;
+
+  --pui-z-overlay: 50;
+  --pui-z-popover: 60;
+  --pui-z-toast: 70;
+  --pui-z-tooltip: 80;
+  --pui-z-cursor: 90;
+
+  --pui-background: oklch(1 0 0);
+  --pui-foreground: oklch(0.141 0.005 285.823);
+  --pui-surface: oklch(1 0 0);
+  --pui-muted: oklch(0.967 0.001 286.375);
+  --pui-muted-foreground: oklch(0.5 0.016 286);
+  --pui-border: oklch(0.92 0.004 286.32);
+  --pui-input: oklch(0.65 0.015 286);
+  --pui-ring: oklch(0.585 0.233 277.117);
+  --pui-overlay: oklch(0.141 0.005 285.823 / 0.4);
+
+  --pui-primary: oklch(0.511 0.262 276.966);
+  --pui-primary-foreground: oklch(0.985 0 0);
+  --pui-primary-text: oklch(0.457 0.24 277.023);
+  --pui-success: oklch(0.527 0.154 150.069);
+  --pui-success-foreground: oklch(0.985 0 0);
+  --pui-success-text: oklch(0.448 0.119 151.328);
+  --pui-warning: oklch(0.769 0.188 70.08);
+  --pui-warning-foreground: oklch(0.279 0.077 45.635);
+  --pui-warning-text: oklch(0.473 0.137 46.201);
+  --pui-danger: oklch(0.577 0.245 27.325);
+  --pui-danger-foreground: oklch(0.985 0 0);
+  --pui-danger-text: oklch(0.505 0.213 27.518);
+  --pui-info: oklch(0.5 0.134 242.749);
+  --pui-info-foreground: oklch(0.985 0 0);
+  --pui-info-text: oklch(0.443 0.11 240.79);
+
+  --pui-highlight: oklch(0.905 0.182 98.111 / 0.6);
+  --pui-beam-from: oklch(0.585 0.233 277.117);
+  --pui-beam-to: oklch(0.667 0.295 322.15);
+  --pui-gradient-1: oklch(0.511 0.262 276.966);
+  --pui-gradient-2: oklch(0.591 0.293 322.896);
+  --pui-gradient-3: oklch(0.645 0.246 16.439);
+  --pui-aurora-1: oklch(0.58 0.22 277);
+  --pui-aurora-2: oklch(0.64 0.17 233);
+  --pui-aurora-3: oklch(0.62 0.26 322);
+  --pui-spotlight: oklch(0.585 0.233 277.117 / 0.12);
+  --pui-shimmer-bg: oklch(0.141 0.005 285.823);
+  --pui-shimmer-fg: oklch(0.985 0 0);
+  --pui-shimmer: oklch(1 0 0);
+  --pui-skeleton-highlight: oklch(0.985 0 0);
+  --pui-solid-highlight: oklch(1 0 0 / 0.2);
+  --pui-pattern: oklch(0.5 0.016 286 / 0.7);
+  --pui-ripple: oklch(0.511 0.262 276.966 / 0.85);
+  --pui-particle: oklch(0.45 0.12 277);
+  --pui-aurora-veil: oklch(1 0 0 / 0.25);
+
+  --pui-chart-1: oklch(0.55 0.22 277);
+  --pui-chart-2: oklch(0.66 0.13 190);
+  --pui-chart-3: oklch(0.75 0.16 70);
+  --pui-chart-4: oklch(0.58 0.21 20);
+  --pui-chart-5: oklch(0.6 0.2 330);
+  --pui-chart-6: oklch(0.5 0.12 245);
+  --pui-chart-7: oklch(0.68 0.16 140);
+  --pui-chart-8: oklch(0.52 0.04 60);
+  --pui-chart-seq-from: oklch(0.96 0.03 277);
+  --pui-chart-seq-to: oklch(0.42 0.2 277);
+  --pui-chart-div-neg: oklch(0.58 0.19 35);
+  --pui-chart-div-pos: oklch(0.52 0.15 245);
+
+  --pui-shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+  --pui-shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
+  --pui-shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
+  --pui-shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
+  --pui-shadow-xl: 0 20px 25px -5px oklch(0 0 0 / 0.1), 0 8px 10px -6px oklch(0 0 0 / 0.1);
+}
+
+.light,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --pui-background: oklch(1 0 0);
+  --pui-foreground: oklch(0.141 0.005 285.823);
+  --pui-surface: oklch(1 0 0);
+  --pui-muted: oklch(0.967 0.001 286.375);
+  --pui-muted-foreground: oklch(0.5 0.016 286);
+  --pui-border: oklch(0.92 0.004 286.32);
+  --pui-input: oklch(0.65 0.015 286);
+  --pui-ring: oklch(0.585 0.233 277.117);
+  --pui-overlay: oklch(0.141 0.005 285.823 / 0.4);
+
+  --pui-primary: oklch(0.511 0.262 276.966);
+  --pui-primary-foreground: oklch(0.985 0 0);
+  --pui-primary-text: oklch(0.457 0.24 277.023);
+  --pui-success: oklch(0.527 0.154 150.069);
+  --pui-success-foreground: oklch(0.985 0 0);
+  --pui-success-text: oklch(0.448 0.119 151.328);
+  --pui-warning: oklch(0.769 0.188 70.08);
+  --pui-warning-foreground: oklch(0.279 0.077 45.635);
+  --pui-warning-text: oklch(0.473 0.137 46.201);
+  --pui-danger: oklch(0.577 0.245 27.325);
+  --pui-danger-foreground: oklch(0.985 0 0);
+  --pui-danger-text: oklch(0.505 0.213 27.518);
+  --pui-info: oklch(0.5 0.134 242.749);
+  --pui-info-foreground: oklch(0.985 0 0);
+  --pui-info-text: oklch(0.443 0.11 240.79);
+
+  --pui-highlight: oklch(0.905 0.182 98.111 / 0.6);
+  --pui-beam-from: oklch(0.585 0.233 277.117);
+  --pui-beam-to: oklch(0.667 0.295 322.15);
+  --pui-gradient-1: oklch(0.511 0.262 276.966);
+  --pui-gradient-2: oklch(0.591 0.293 322.896);
+  --pui-gradient-3: oklch(0.645 0.246 16.439);
+  --pui-aurora-1: oklch(0.58 0.22 277);
+  --pui-aurora-2: oklch(0.64 0.17 233);
+  --pui-aurora-3: oklch(0.62 0.26 322);
+  --pui-spotlight: oklch(0.585 0.233 277.117 / 0.12);
+  --pui-shimmer-bg: oklch(0.141 0.005 285.823);
+  --pui-shimmer-fg: oklch(0.985 0 0);
+  --pui-shimmer: oklch(1 0 0);
+  --pui-skeleton-highlight: oklch(0.985 0 0);
+  --pui-solid-highlight: oklch(1 0 0 / 0.2);
+  --pui-pattern: oklch(0.5 0.016 286 / 0.7);
+  --pui-ripple: oklch(0.511 0.262 276.966 / 0.85);
+  --pui-particle: oklch(0.45 0.12 277);
+  --pui-aurora-veil: oklch(1 0 0 / 0.25);
+
+  --pui-chart-1: oklch(0.55 0.22 277);
+  --pui-chart-2: oklch(0.66 0.13 190);
+  --pui-chart-3: oklch(0.75 0.16 70);
+  --pui-chart-4: oklch(0.58 0.21 20);
+  --pui-chart-5: oklch(0.6 0.2 330);
+  --pui-chart-6: oklch(0.5 0.12 245);
+  --pui-chart-7: oklch(0.68 0.16 140);
+  --pui-chart-8: oklch(0.52 0.04 60);
+  --pui-chart-seq-from: oklch(0.96 0.03 277);
+  --pui-chart-seq-to: oklch(0.42 0.2 277);
+  --pui-chart-div-neg: oklch(0.58 0.19 35);
+  --pui-chart-div-pos: oklch(0.52 0.15 245);
+
+  --pui-shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+  --pui-shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
+  --pui-shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
+  --pui-shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
+  --pui-shadow-xl: 0 20px 25px -5px oklch(0 0 0 / 0.1), 0 8px 10px -6px oklch(0 0 0 / 0.1);
+}
+
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --pui-background: oklch(0.141 0.005 285.823);
+  --pui-foreground: oklch(0.985 0 0);
+  --pui-surface: oklch(0.21 0.006 285.885);
+  --pui-muted: oklch(0.274 0.006 286.033);
+  --pui-muted-foreground: oklch(0.705 0.015 286.067);
+  --pui-border: oklch(0.274 0.006 286.033);
+  --pui-input: oklch(0.552 0.016 285.938);
+  --pui-ring: oklch(0.673 0.182 276.935);
+  --pui-overlay: oklch(0 0 0 / 0.6);
+
+  --pui-primary: oklch(0.673 0.182 276.935);
+  --pui-primary-foreground: oklch(0.141 0.005 285.823);
+  --pui-primary-text: oklch(0.785 0.115 274.713);
+  --pui-success: oklch(0.723 0.219 149.579);
+  --pui-success-foreground: oklch(0.141 0.005 285.823);
+  --pui-success-text: oklch(0.792 0.209 151.711);
+  --pui-warning: oklch(0.828 0.189 84.429);
+  --pui-warning-foreground: oklch(0.141 0.005 285.823);
+  --pui-warning-text: oklch(0.879 0.169 91.605);
+  --pui-danger: oklch(0.577 0.245 27.325);
+  --pui-danger-foreground: oklch(0.985 0 0);
+  --pui-danger-text: oklch(0.704 0.191 22.216);
+  --pui-info: oklch(0.746 0.16 232.661);
+  --pui-info-foreground: oklch(0.141 0.005 285.823);
+  --pui-info-text: oklch(0.828 0.111 230.318);
+
+  --pui-highlight: oklch(0.795 0.184 86.047 / 0.35);
+  --pui-beam-from: oklch(0.585 0.233 277.117);
+  --pui-beam-to: oklch(0.667 0.295 322.15);
+  --pui-gradient-1: oklch(0.673 0.182 276.935);
+  --pui-gradient-2: oklch(0.74 0.238 322.16);
+  --pui-gradient-3: oklch(0.712 0.194 13.428);
+  --pui-aurora-1: oklch(0.673 0.182 276.935);
+  --pui-aurora-2: oklch(0.746 0.16 232.661);
+  --pui-aurora-3: oklch(0.74 0.238 322.16);
+  --pui-spotlight: oklch(0.673 0.182 276.935 / 0.18);
+  --pui-shimmer-bg: oklch(0.141 0.005 285.823);
+  --pui-shimmer-fg: oklch(0.985 0 0);
+  --pui-shimmer: oklch(1 0 0);
+  --pui-skeleton-highlight: oklch(0.37 0.013 285.805);
+  --pui-solid-highlight: oklch(1 0 0 / 0.12);
+  --pui-pattern: oklch(0.705 0.015 286 / 0.38);
+  --pui-ripple: oklch(0.785 0.115 274.713 / 0.55);
+  --pui-particle: oklch(0.85 0.05 277);
+  --pui-aurora-veil: oklch(0.141 0.005 285.823);
+
+  --pui-chart-1: oklch(0.7 0.17 277);
+  --pui-chart-2: oklch(0.76 0.12 190);
+  --pui-chart-3: oklch(0.82 0.15 75);
+  --pui-chart-4: oklch(0.7 0.18 22);
+  --pui-chart-5: oklch(0.72 0.17 330);
+  --pui-chart-6: oklch(0.74 0.12 240);
+  --pui-chart-7: oklch(0.78 0.15 140);
+  --pui-chart-8: oklch(0.72 0.03 60);
+  --pui-chart-seq-from: oklch(0.28 0.06 277);
+  --pui-chart-seq-to: oklch(0.85 0.13 277);
+  --pui-chart-div-neg: oklch(0.72 0.16 35);
+  --pui-chart-div-pos: oklch(0.72 0.13 245);
+
+  --pui-shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.3);
+  --pui-shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.4), 0 1px 2px -1px oklch(0 0 0 / 0.4);
+  --pui-shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.4), 0 2px 4px -2px oklch(0 0 0 / 0.4);
+  --pui-shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.45), 0 4px 6px -4px oklch(0 0 0 / 0.45);
+  --pui-shadow-xl: 0 20px 25px -5px oklch(0 0 0 / 0.5), 0 8px 10px -6px oklch(0 0 0 / 0.5);
+}
+
+/* Derived tokens: re-substituted on every theme root, preset (themes.css) and [data-pui-scope] element. */
+:root,
+.light,
+[data-theme="light"],
+.dark,
+[data-theme="dark"],
+[data-pui-theme],
+[data-pui-scope] {
+  --pui-surface-foreground: var(--pui-foreground);
+  --pui-skeleton: var(--pui-muted);
+  --pui-radius-sm: calc(var(--pui-radius) - 4px);
+  --pui-radius-md: calc(var(--pui-radius) - 2px);
+  --pui-radius-lg: var(--pui-radius);
+  --pui-radius-xl: calc(var(--pui-radius) + 4px);
+  --pui-shadow-glow:
+    0 0 0 1px color-mix(in oklab, var(--pui-primary) 30%, transparent),
+    0 8px 24px -6px color-mix(in oklab, var(--pui-primary) 45%, transparent);
+
+  --pui-chart-up: var(--pui-success);
+  --pui-chart-down: var(--pui-danger);
+  --pui-chart-grid: color-mix(in oklab, var(--pui-border) 70%, transparent);
+  --pui-chart-axis: var(--pui-border);
+  --pui-chart-crosshair: color-mix(in oklab, var(--pui-foreground) 40%, transparent);
+  --pui-chart-tooltip-bg: var(--pui-surface);
+  --pui-chart-tooltip-fg: var(--pui-surface-foreground);
+  --pui-chart-tooltip-border: var(--pui-border);
+  --pui-chart-div-mid: var(--pui-muted);
+}
+
+@theme inline {
+  --color-pui-background: var(--pui-background);
+  --color-pui-foreground: var(--pui-foreground);
+  --color-pui-surface: var(--pui-surface);
+  --color-pui-surface-foreground: var(--pui-surface-foreground);
+  --color-pui-muted: var(--pui-muted);
+  --color-pui-muted-foreground: var(--pui-muted-foreground);
+  --color-pui-border: var(--pui-border);
+  --color-pui-input: var(--pui-input);
+  --color-pui-ring: var(--pui-ring);
+  --color-pui-overlay: var(--pui-overlay);
+  --color-pui-primary: var(--pui-primary);
+  --color-pui-primary-foreground: var(--pui-primary-foreground);
+  --color-pui-primary-text: var(--pui-primary-text);
+  --color-pui-success: var(--pui-success);
+  --color-pui-success-foreground: var(--pui-success-foreground);
+  --color-pui-success-text: var(--pui-success-text);
+  --color-pui-warning: var(--pui-warning);
+  --color-pui-warning-foreground: var(--pui-warning-foreground);
+  --color-pui-warning-text: var(--pui-warning-text);
+  --color-pui-danger: var(--pui-danger);
+  --color-pui-danger-foreground: var(--pui-danger-foreground);
+  --color-pui-danger-text: var(--pui-danger-text);
+  --color-pui-info: var(--pui-info);
+  --color-pui-info-foreground: var(--pui-info-foreground);
+  --color-pui-info-text: var(--pui-info-text);
+  --color-pui-highlight: var(--pui-highlight);
+  --color-pui-beam-from: var(--pui-beam-from);
+  --color-pui-beam-to: var(--pui-beam-to);
+  --color-pui-gradient-1: var(--pui-gradient-1);
+  --color-pui-gradient-2: var(--pui-gradient-2);
+  --color-pui-gradient-3: var(--pui-gradient-3);
+  --color-pui-aurora-1: var(--pui-aurora-1);
+  --color-pui-aurora-2: var(--pui-aurora-2);
+  --color-pui-aurora-3: var(--pui-aurora-3);
+  --color-pui-spotlight: var(--pui-spotlight);
+  --color-pui-shimmer-bg: var(--pui-shimmer-bg);
+  --color-pui-shimmer-fg: var(--pui-shimmer-fg);
+  --color-pui-shimmer: var(--pui-shimmer);
+  --color-pui-skeleton: var(--pui-skeleton);
+  --color-pui-skeleton-highlight: var(--pui-skeleton-highlight);
+  --color-pui-solid-highlight: var(--pui-solid-highlight);
+  --color-pui-pattern: var(--pui-pattern);
+  --color-pui-ripple: var(--pui-ripple);
+  --color-pui-particle: var(--pui-particle);
+  --color-pui-aurora-veil: var(--pui-aurora-veil);
+  --color-pui-chart-1: var(--pui-chart-1);
+  --color-pui-chart-2: var(--pui-chart-2);
+  --color-pui-chart-3: var(--pui-chart-3);
+  --color-pui-chart-4: var(--pui-chart-4);
+  --color-pui-chart-5: var(--pui-chart-5);
+  --color-pui-chart-6: var(--pui-chart-6);
+  --color-pui-chart-7: var(--pui-chart-7);
+  --color-pui-chart-8: var(--pui-chart-8);
+  --color-pui-chart-seq-from: var(--pui-chart-seq-from);
+  --color-pui-chart-seq-to: var(--pui-chart-seq-to);
+  --color-pui-chart-div-neg: var(--pui-chart-div-neg);
+  --color-pui-chart-div-mid: var(--pui-chart-div-mid);
+  --color-pui-chart-div-pos: var(--pui-chart-div-pos);
+  --color-pui-chart-up: var(--pui-chart-up);
+  --color-pui-chart-down: var(--pui-chart-down);
+  --color-pui-chart-grid: var(--pui-chart-grid);
+  --color-pui-chart-axis: var(--pui-chart-axis);
+  --color-pui-chart-crosshair: var(--pui-chart-crosshair);
+  --color-pui-chart-tooltip-bg: var(--pui-chart-tooltip-bg);
+  --color-pui-chart-tooltip-fg: var(--pui-chart-tooltip-fg);
+  --color-pui-chart-tooltip-border: var(--pui-chart-tooltip-border);
+
+
+  --radius-pui-sm: var(--pui-radius-sm);
+  --radius-pui-md: var(--pui-radius-md);
+  --radius-pui-lg: var(--pui-radius-lg);
+  --radius-pui-xl: var(--pui-radius-xl);
+  --radius-pui-full: var(--pui-radius-full);
+
+  --shadow-pui-xs: var(--pui-shadow-xs);
+  --shadow-pui-sm: var(--pui-shadow-sm);
+  --shadow-pui-md: var(--pui-shadow-md);
+  --shadow-pui-lg: var(--pui-shadow-lg);
+  --shadow-pui-xl: var(--pui-shadow-xl);
+  --shadow-pui-glow: var(--pui-shadow-glow);
+
+  --font-pui-sans: var(--pui-font-sans);
+  --font-pui-display: var(--pui-font-display);
+  --font-pui-mono: var(--pui-font-mono);
+
+  --ease-pui-out: var(--pui-ease-out);
+  --ease-pui-in-out: var(--pui-ease-in-out);
+  --ease-pui-spring: var(--pui-ease-spring);
+  --ease-pui-out-expo: var(--pui-ease-out-expo);
+  --ease-pui-in-quint: var(--pui-ease-in-quint);
+  --ease-pui-emphasized: var(--pui-ease-emphasized);
+
+  --animate-pui-shimmer-slide: pui-shimmer-slide var(--pui-shimmer-duration, 3s) ease-in-out infinite alternate;
+  --animate-pui-spin-around: pui-spin-around calc(var(--pui-shimmer-duration, 3s) * 2) infinite linear;
+  --animate-pui-text-shimmer: pui-text-shimmer 2.5s linear infinite;
+  --animate-pui-gradient-pan: pui-gradient-pan 6s ease infinite;
+  --animate-pui-marquee-x: pui-marquee-x var(--pui-marquee-duration, 40s) linear infinite;
+  --animate-pui-marquee-y: pui-marquee-y var(--pui-marquee-duration, 40s) linear infinite;
+  --animate-pui-meteor: pui-meteor 5s linear infinite;
+  --animate-pui-ripple: pui-ripple 3.4s ease infinite;
+  --animate-pui-aurora: pui-aurora 60s linear infinite;
+  --animate-pui-orbit: pui-orbit var(--pui-orbit-duration, 20s) linear infinite;
+  --animate-pui-shine: pui-shine var(--pui-shine-duration, 14s) linear infinite;
+  --animate-pui-skeleton-shimmer: pui-skeleton-shimmer 1.6s ease-in-out infinite;
+  --animate-pui-indeterminate: pui-indeterminate 1.5s ease-in-out infinite;
+  --animate-pui-blink: pui-blink 1s step-end infinite;
+  --animate-pui-dot-bounce: pui-dot-bounce 1.4s ease-in-out infinite;
+  --animate-pui-bar-scale: pui-bar-scale 1.2s ease-in-out infinite;
+  --animate-pui-toast-progress: pui-toast-progress linear forwards;
+  --animate-pui-wave: pui-wave var(--pui-wave-duration, 1.6s) ease-in-out infinite;
+  --animate-pui-beam-fall: pui-beam-fall var(--pui-beam-duration, 6s) linear infinite;
+  --animate-pui-wave-drift: pui-wave-drift var(--pui-wave-drift-duration, 12s) linear infinite;
+  --animate-pui-retro-scroll: pui-retro-scroll var(--pui-retro-duration, 1.5s) linear infinite;
+  --animate-pui-lava-x: pui-lava-x var(--pui-lava-x-duration, 14s) ease-in-out infinite alternate;
+  --animate-pui-lava-y: pui-lava-y var(--pui-lava-y-duration, 18s) ease-in-out infinite alternate;
+  --animate-pui-ray-sway: pui-ray-sway var(--pui-ray-duration, 12s) ease-in-out infinite alternate;
+  --animate-pui-mesh-drift: pui-mesh-drift var(--pui-mesh-duration, 20s) ease-in-out infinite alternate;
+  --animate-pui-grain: pui-grain var(--pui-grain-duration, 1s) steps(1, end) infinite;
+  --animate-pui-dash-march: pui-dash-march 0.6s linear infinite;
+
+  @keyframes pui-shimmer-slide {
+    to {
+      transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes pui-spin-around {
+    0% {
+      transform: translateZ(0) rotate(0);
+    }
+    15%,
+    35% {
+      transform: translateZ(0) rotate(90deg);
+    }
+    65%,
+    85% {
+      transform: translateZ(0) rotate(270deg);
+    }
+    100% {
+      transform: translateZ(0) rotate(360deg);
+    }
+  }
+  @keyframes pui-text-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  @keyframes pui-gradient-pan {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  @keyframes pui-marquee-x {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--pui-marquee-gap, 1rem)));
+    }
+  }
+  @keyframes pui-marquee-y {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--pui-marquee-gap, 1rem)));
+    }
+  }
+  @keyframes pui-meteor {
+    0% {
+      transform: rotate(var(--pui-meteor-angle, 215deg)) translateX(0);
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(var(--pui-meteor-angle, 215deg)) translateX(-500px);
+      opacity: 0;
+    }
+  }
+  @keyframes pui-ripple {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+  }
+  @keyframes pui-aurora {
+    from {
+      background-position: 50% 50%, 50% 50%;
+    }
+    to {
+      background-position: 350% 50%, 350% 50%;
+    }
+  }
+  @keyframes pui-orbit {
+    from {
+      transform: rotate(var(--pui-orbit-angle, 0deg)) translateY(var(--pui-orbit-radius, 100px))
+        rotate(calc(var(--pui-orbit-angle, 0deg) * -1));
+    }
+    to {
+      transform: rotate(calc(var(--pui-orbit-angle, 0deg) + 360deg)) translateY(var(--pui-orbit-radius, 100px))
+        rotate(calc(var(--pui-orbit-angle, 0deg) * -1 - 360deg));
+    }
+  }
+  @keyframes pui-shine {
+    0% {
+      background-position: 0% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    100% {
+      background-position: 0% 0%;
+    }
+  }
+  @keyframes pui-skeleton-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  @keyframes pui-indeterminate {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(400%);
+    }
+  }
+  @keyframes pui-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes pui-dot-bounce {
+    0%,
+    80%,
+    100% {
+      transform: scale(0.4);
+      opacity: 0.5;
+    }
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes pui-toast-progress {
+    from {
+      transform: scaleX(1);
+    }
+    to {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes pui-wave {
+    0%,
+    100% {
+      transform: translateY(var(--pui-wave-amp, 6px));
+    }
+    50% {
+      transform: translateY(calc(var(--pui-wave-amp, 6px) * -1));
+    }
+  }
+  @keyframes pui-bar-scale {
+    0%,
+    40%,
+    100% {
+      transform: scaleY(0.4);
+    }
+    20% {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes pui-beam-fall {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes pui-wave-drift {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes pui-retro-scroll {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(var(--pui-retro-cell, 60px));
+    }
+  }
+  @keyframes pui-lava-x {
+    from {
+      transform: translateX(var(--pui-lava-x0, -20%));
+    }
+    to {
+      transform: translateX(var(--pui-lava-x1, 20%));
+    }
+  }
+  @keyframes pui-lava-y {
+    from {
+      transform: translateY(var(--pui-lava-y0, -40%)) scale(var(--pui-lava-s0, 1));
+    }
+    to {
+      transform: translateY(var(--pui-lava-y1, 40%)) scale(var(--pui-lava-s1, 1));
+    }
+  }
+  @keyframes pui-ray-sway {
+    from {
+      transform: rotate(calc(var(--pui-ray-angle, 0deg) - var(--pui-ray-sway, 3deg)));
+      opacity: var(--pui-ray-dim, 0.6);
+    }
+    to {
+      transform: rotate(calc(var(--pui-ray-angle, 0deg) + var(--pui-ray-sway, 3deg)));
+      opacity: 1;
+    }
+  }
+  @keyframes pui-mesh-drift {
+    from {
+      transform: translate(calc(var(--pui-mesh-x, 10cqw) * -1), calc(var(--pui-mesh-y, 10cqh) * -1)) scale(var(--pui-mesh-s0, 0.9));
+    }
+    to {
+      transform: translate(var(--pui-mesh-x, 10cqw), var(--pui-mesh-y, 10cqh)) scale(var(--pui-mesh-s1, 1.15));
+    }
+  }
+  @keyframes pui-dash-march {
+    to {
+      stroke-dashoffset: -14;
+    }
+  }
+  @keyframes pui-grain {
+    0% {
+      transform: translate(0, 0);
+    }
+    10% {
+      transform: translate(-5%, -10%);
+    }
+    20% {
+      transform: translate(-15%, 5%);
+    }
+    30% {
+      transform: translate(7%, -25%);
+    }
+    40% {
+      transform: translate(-5%, 25%);
+    }
+    50% {
+      transform: translate(-15%, 10%);
+    }
+    60% {
+      transform: translate(15%, 0);
+    }
+    70% {
+      transform: translate(0, 15%);
+    }
+    80% {
+      transform: translate(3%, 35%);
+    }
+    90% {
+      transform: translate(-10%, 10%);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+}
+
+/* ThemeToggle view transition (7.1 #32): disable the default root crossfade during our transition only. */
+:root[data-pui-theme-transition]::view-transition-old(root),
+:root[data-pui-theme-transition]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

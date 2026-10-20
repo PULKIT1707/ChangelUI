@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+  },
+  "include": [
+    "src",
+    "test",
+    "scripts",
+    "e2e",
+    "tsup.config.ts",
+    "vitest.config.ts",
+    "playwright*.config.ts"
+  ],
+  "exclude": ["test/consumers", "dist", "dashboard/dist", "node_modules"]
+}

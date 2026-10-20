@@ -1,0 +1,27 @@
+{
+  "name": "changelui-consumer-react19-tailwind",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Consumer A (design 12.4): React 19 + motion 14 + Tailwind v4 (Mode 1). scripts/consumer-test.ts rewrites changelui to file:<tarball>.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "changelui": "file:../../..",
+    "motion": "14.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vite": "8.3.4"
+  }
+}

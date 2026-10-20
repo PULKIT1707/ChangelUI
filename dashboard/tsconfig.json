@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": ["vite/client", "@testing-library/jest-dom/vitest"],
+    "paths": {
+      "changelui": ["../src/index.ts"],
+      "changelui/cn": ["../src/lib/cn.ts"],
+      "changelui/theme-script": ["../src/lib/theme-script.ts"],
+      "changelui/*": [
+        "../src/components/*",
+        "../src/text/*",
+        "../src/effects/*",
+        "../src/backgrounds/*",
+        "../src/charts/*",
+        "../src/hooks/*"
+      ],
+      "@pui-src/*": ["../src/*"]
+    }
+  },
+  "include": ["src", "../templates", "vite.config.ts"],
+  "exclude": ["dist"]
+}
