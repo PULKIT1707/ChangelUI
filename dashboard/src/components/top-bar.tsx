@@ -10,17 +10,74 @@ import {
   ThemeToggle,
 } from "changelui";
 import { useIsClient } from "@pui-src/lib/use-is-client";
-import type { Ref } from "react";
+import { useEffect, useState, type Ref } from "react";
 import { isMac, paletteShortcut } from "../lib/platform";
 import { docHref, homeHref, type Route } from "../router";
 import { MobileNav } from "./mobile-nav";
 
+const REPO_URL = "https://github.com/PULKIT1707/ChangelUI";
+
+/** ChangelUI mark: an open "C" arc with a spark where the change lands. */
 export function Logo() {
   return (
     <svg viewBox="0 0 32 32" className="size-7 shrink-0" aria-hidden="true">
-      <rect width="32" height="32" rx="9" className="fill-pui-primary" />
-      <path d="M11 22V10h6a4 4 0 0 1 0 8h-6" fill="none" strokeWidth={2.5} strokeLinecap="round" className="stroke-pui-primary-foreground" />
+      <defs>
+        <linearGradient id="changelui-logo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" style={{ stopColor: "var(--pui-primary)" }} />
+          <stop offset="100%" style={{ stopColor: "var(--pui-chart-2, var(--pui-primary))" }} />
+        </linearGradient>
+      </defs>
+      <rect width="32" height="32" rx="9" fill="url(#changelui-logo)" />
+      <path d="M21.5 10.5a8 8 0 1 0 0 11" fill="none" strokeWidth={3} strokeLinecap="round" className="stroke-pui-primary-foreground" />
+      <circle cx="23" cy="16" r="2" className="fill-pui-primary-foreground" />
     </svg>
+  );
+}
+
+function GitHubIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-4" fill="currentColor" aria-hidden="true">
+      <path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z" />
+    </svg>
+  );
+}
+
+function StarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-3.5 text-pui-warning" fill="currentColor" aria-hidden="true">
+      <path d="m12 2.5 2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.2l-5.9 3.3 1.3-6.6-4.9-4.5 6.6-.8L12 2.5Z" />
+    </svg>
+  );
+}
+
+/** "Star on GitHub" link with the live star count (hidden until GitHub answers). */
+function GitHubStar() {
+  const [stars, setStars] = useState<number | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("https://api.github.com/repos/PULKIT1707/ChangelUI")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { stargazers_count?: number } | null) => {
+        if (!cancelled && typeof data?.stargazers_count === "number") setStars(data.stargazers_count);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return (
+    <a
+      href={REPO_URL}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={stars === null ? "Star ChangelUI on GitHub" : `Star ChangelUI on GitHub (${stars} stars)`}
+      className="flex h-9 items-center gap-1.5 rounded-pui-md border border-pui-border bg-pui-surface px-2.5 text-sm font-medium text-pui-foreground transition-colors hover:bg-pui-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pui-ring"
+    >
+      <GitHubIcon />
+      <StarIcon />
+      <span className="hidden sm:inline">Star</span>
+      {stars !== null ? <span className="tabular-nums text-pui-muted-foreground">{stars}</span> : null}
+    </a>
   );
 }
 
@@ -107,6 +164,7 @@ export function TopBar({ route, onSearch, themeToggleRef }: TopBarProps) {
               </Kbd>
             ) : null}
           </button>
+          <GitHubStar />
           <PresetPicker />
           <ThemeToggle ref={themeToggleRef} variant="ghost" tone="neutral" size="sm" storageKey="pui-theme" attribute="both" />
         </div>

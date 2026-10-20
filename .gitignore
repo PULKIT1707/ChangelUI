@@ -9,3 +9,5 @@ playwright-report/
 .agents/
 .claude/
 .DS_Store
+.vercel
+.env*
