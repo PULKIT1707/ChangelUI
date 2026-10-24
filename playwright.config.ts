@@ -8,7 +8,8 @@ const baseURL = `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: "e2e",
-  testIgnore: "consumer.spec.ts",
+  // analytics.spec.ts needs the fake-key build: `npm run test:e2e:analytics` (playwright.analytics.config.ts).
+  testIgnore: ["consumer.spec.ts", "analytics.spec.ts"],
   fullyParallel: true,
   forbidOnly: true,
   retries: 0,
@@ -20,6 +21,8 @@ export default defineConfig({
     url: baseURL,
     reuseExistingServer: false,
     timeout: 240_000,
+    // An empty key wins over dashboard/.env*.local, so this suite always tests the analytics-off build.
+    env: { VITE_POSTHOG_KEY: "" },
   },
   projects: [
     { name: "desktop", grep: /@desktop/, use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },

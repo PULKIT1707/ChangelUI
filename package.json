@@ -41,6 +41,36 @@
         "default": "./dist/accordion.cjs"
       }
     },
+    "./activity-feed": {
+      "import": {
+        "types": "./dist/activity-feed.d.ts",
+        "default": "./dist/activity-feed.js"
+      },
+      "require": {
+        "types": "./dist/activity-feed.d.cts",
+        "default": "./dist/activity-feed.cjs"
+      }
+    },
+    "./address-input": {
+      "import": {
+        "types": "./dist/address-input.d.ts",
+        "default": "./dist/address-input.js"
+      },
+      "require": {
+        "types": "./dist/address-input.d.cts",
+        "default": "./dist/address-input.cjs"
+      }
+    },
+    "./agent-plan": {
+      "import": {
+        "types": "./dist/agent-plan.d.ts",
+        "default": "./dist/agent-plan.js"
+      },
+      "require": {
+        "types": "./dist/agent-plan.d.cts",
+        "default": "./dist/agent-plan.cjs"
+      }
+    },
     "./alert": {
       "import": {
         "types": "./dist/alert.d.ts",
@@ -79,6 +109,16 @@
       "require": {
         "types": "./dist/breadcrumb.d.cts",
         "default": "./dist/breadcrumb.cjs"
+      }
+    },
+    "./bulk-action-bar": {
+      "import": {
+        "types": "./dist/bulk-action-bar.d.ts",
+        "default": "./dist/bulk-action-bar.js"
+      },
+      "require": {
+        "types": "./dist/bulk-action-bar.d.cts",
+        "default": "./dist/bulk-action-bar.cjs"
       }
     },
     "./button": {
@@ -131,6 +171,26 @@
         "default": "./dist/carousel.cjs"
       }
     },
+    "./chat-message": {
+      "import": {
+        "types": "./dist/chat-message.d.ts",
+        "default": "./dist/chat-message.js"
+      },
+      "require": {
+        "types": "./dist/chat-message.d.cts",
+        "default": "./dist/chat-message.cjs"
+      }
+    },
+    "./chat-scroller": {
+      "import": {
+        "types": "./dist/chat-scroller.d.ts",
+        "default": "./dist/chat-scroller.js"
+      },
+      "require": {
+        "types": "./dist/chat-scroller.d.cts",
+        "default": "./dist/chat-scroller.cjs"
+      }
+    },
     "./checkbox": {
       "import": {
         "types": "./dist/checkbox.d.ts",
@@ -149,6 +209,26 @@
       "require": {
         "types": "./dist/chip.d.cts",
         "default": "./dist/chip.cjs"
+      }
+    },
+    "./clarifying-questions": {
+      "import": {
+        "types": "./dist/clarifying-questions.d.ts",
+        "default": "./dist/clarifying-questions.js"
+      },
+      "require": {
+        "types": "./dist/clarifying-questions.d.cts",
+        "default": "./dist/clarifying-questions.cjs"
+      }
+    },
+    "./code-block-tabs": {
+      "import": {
+        "types": "./dist/code-block-tabs.d.ts",
+        "default": "./dist/code-block-tabs.js"
+      },
+      "require": {
+        "types": "./dist/code-block-tabs.d.cts",
+        "default": "./dist/code-block-tabs.cjs"
       }
     },
     "./collapsible": {
@@ -191,6 +271,26 @@
         "default": "./dist/command-menu.cjs"
       }
     },
+    "./comments-thread": {
+      "import": {
+        "types": "./dist/comments-thread.d.ts",
+        "default": "./dist/comments-thread.js"
+      },
+      "require": {
+        "types": "./dist/comments-thread.d.cts",
+        "default": "./dist/comments-thread.cjs"
+      }
+    },
+    "./consent-banner": {
+      "import": {
+        "types": "./dist/consent-banner.d.ts",
+        "default": "./dist/consent-banner.js"
+      },
+      "require": {
+        "types": "./dist/consent-banner.d.cts",
+        "default": "./dist/consent-banner.cjs"
+      }
+    },
     "./context-menu": {
       "import": {
         "types": "./dist/context-menu.d.ts",
@@ -199,6 +299,16 @@
       "require": {
         "types": "./dist/context-menu.d.cts",
         "default": "./dist/context-menu.cjs"
+      }
+    },
+    "./context-meter": {
+      "import": {
+        "types": "./dist/context-meter.d.ts",
+        "default": "./dist/context-meter.js"
+      },
+      "require": {
+        "types": "./dist/context-meter.d.cts",
+        "default": "./dist/context-meter.cjs"
       }
     },
     "./copy-button": {
@@ -211,6 +321,26 @@
         "default": "./dist/copy-button.cjs"
       }
     },
+    "./cron-editor": {
+      "import": {
+        "types": "./dist/cron-editor.d.ts",
+        "default": "./dist/cron-editor.js"
+      },
+      "require": {
+        "types": "./dist/cron-editor.d.cts",
+        "default": "./dist/cron-editor.cjs"
+      }
+    },
+    "./currency-input": {
+      "import": {
+        "types": "./dist/currency-input.d.ts",
+        "default": "./dist/currency-input.js"
+      },
+      "require": {
+        "types": "./dist/currency-input.d.cts",
+        "default": "./dist/currency-input.cjs"
+      }
+    },
     "./date-picker": {
       "import": {
         "types": "./dist/date-picker.d.ts",
@@ -221,6 +351,16 @@
         "default": "./dist/date-picker.cjs"
       }
     },
+    "./device-frame": {
+      "import": {
+        "types": "./dist/device-frame.d.ts",
+        "default": "./dist/device-frame.js"
+      },
+      "require": {
+        "types": "./dist/device-frame.d.cts",
+        "default": "./dist/device-frame.cjs"
+      }
+    },
     "./dialog": {
       "import": {
         "types": "./dist/dialog.d.ts",
@@ -229,6 +369,16 @@
       "require": {
         "types": "./dist/dialog.d.cts",
         "default": "./dist/dialog.cjs"
+      }
+    },
+    "./diff-viewer": {
+      "import": {
+        "types": "./dist/diff-viewer.d.ts",
+        "default": "./dist/diff-viewer.js"
+      },
+      "require": {
+        "types": "./dist/diff-viewer.d.cts",
+        "default": "./dist/diff-viewer.cjs"
       }
     },
     "./dock": {
@@ -271,6 +421,16 @@
         "default": "./dist/dynamic-island.cjs"
       }
     },
+    "./empty-state": {
+      "import": {
+        "types": "./dist/empty-state.d.ts",
+        "default": "./dist/empty-state.js"
+      },
+      "require": {
+        "types": "./dist/empty-state.d.cts",
+        "default": "./dist/empty-state.cjs"
+      }
+    },
     "./expandable-search": {
       "import": {
         "types": "./dist/expandable-search.d.ts",
@@ -281,6 +441,16 @@
         "default": "./dist/expandable-search.cjs"
       }
     },
+    "./feedback-widget": {
+      "import": {
+        "types": "./dist/feedback-widget.d.ts",
+        "default": "./dist/feedback-widget.js"
+      },
+      "require": {
+        "types": "./dist/feedback-widget.d.cts",
+        "default": "./dist/feedback-widget.cjs"
+      }
+    },
     "./file-dropzone": {
       "import": {
         "types": "./dist/file-dropzone.d.ts",
@@ -289,6 +459,36 @@
       "require": {
         "types": "./dist/file-dropzone.d.cts",
         "default": "./dist/file-dropzone.cjs"
+      }
+    },
+    "./filter-bar": {
+      "import": {
+        "types": "./dist/filter-bar.d.ts",
+        "default": "./dist/filter-bar.js"
+      },
+      "require": {
+        "types": "./dist/filter-bar.d.cts",
+        "default": "./dist/filter-bar.cjs"
+      }
+    },
+    "./form-field": {
+      "import": {
+        "types": "./dist/form-field.d.ts",
+        "default": "./dist/form-field.js"
+      },
+      "require": {
+        "types": "./dist/form-field.d.cts",
+        "default": "./dist/form-field.cjs"
+      }
+    },
+    "./histogram-range": {
+      "import": {
+        "types": "./dist/histogram-range.d.ts",
+        "default": "./dist/histogram-range.js"
+      },
+      "require": {
+        "types": "./dist/histogram-range.d.cts",
+        "default": "./dist/histogram-range.cjs"
       }
     },
     "./hold-to-confirm": {
@@ -331,6 +531,36 @@
         "default": "./dist/image-compare.cjs"
       }
     },
+    "./image-cropper": {
+      "import": {
+        "types": "./dist/image-cropper.d.ts",
+        "default": "./dist/image-cropper.js"
+      },
+      "require": {
+        "types": "./dist/image-cropper.d.cts",
+        "default": "./dist/image-cropper.cjs"
+      }
+    },
+    "./inline-citation": {
+      "import": {
+        "types": "./dist/inline-citation.d.ts",
+        "default": "./dist/inline-citation.js"
+      },
+      "require": {
+        "types": "./dist/inline-citation.d.cts",
+        "default": "./dist/inline-citation.cjs"
+      }
+    },
+    "./inline-edit": {
+      "import": {
+        "types": "./dist/inline-edit.d.ts",
+        "default": "./dist/inline-edit.js"
+      },
+      "require": {
+        "types": "./dist/inline-edit.d.cts",
+        "default": "./dist/inline-edit.cjs"
+      }
+    },
     "./input": {
       "import": {
         "types": "./dist/input.d.ts",
@@ -339,6 +569,36 @@
       "require": {
         "types": "./dist/input.d.cts",
         "default": "./dist/input.cjs"
+      }
+    },
+    "./input-group": {
+      "import": {
+        "types": "./dist/input-group.d.ts",
+        "default": "./dist/input-group.js"
+      },
+      "require": {
+        "types": "./dist/input-group.d.cts",
+        "default": "./dist/input-group.cjs"
+      }
+    },
+    "./json-viewer": {
+      "import": {
+        "types": "./dist/json-viewer.d.ts",
+        "default": "./dist/json-viewer.js"
+      },
+      "require": {
+        "types": "./dist/json-viewer.d.cts",
+        "default": "./dist/json-viewer.cjs"
+      }
+    },
+    "./kanban-board": {
+      "import": {
+        "types": "./dist/kanban-board.d.ts",
+        "default": "./dist/kanban-board.js"
+      },
+      "require": {
+        "types": "./dist/kanban-board.d.cts",
+        "default": "./dist/kanban-board.cjs"
       }
     },
     "./kbd": {
@@ -359,6 +619,36 @@
       "require": {
         "types": "./dist/lightbox.d.cts",
         "default": "./dist/lightbox.cjs"
+      }
+    },
+    "./log-viewer": {
+      "import": {
+        "types": "./dist/log-viewer.d.ts",
+        "default": "./dist/log-viewer.js"
+      },
+      "require": {
+        "types": "./dist/log-viewer.d.cts",
+        "default": "./dist/log-viewer.cjs"
+      }
+    },
+    "./markdown-editor": {
+      "import": {
+        "types": "./dist/markdown-editor.d.ts",
+        "default": "./dist/markdown-editor.js"
+      },
+      "require": {
+        "types": "./dist/markdown-editor.d.cts",
+        "default": "./dist/markdown-editor.cjs"
+      }
+    },
+    "./model-selector": {
+      "import": {
+        "types": "./dist/model-selector.d.ts",
+        "default": "./dist/model-selector.js"
+      },
+      "require": {
+        "types": "./dist/model-selector.d.cts",
+        "default": "./dist/model-selector.cjs"
       }
     },
     "./morphing-dialog": {
@@ -391,6 +681,16 @@
         "default": "./dist/navigation-menu.cjs"
       }
     },
+    "./notification-center": {
+      "import": {
+        "types": "./dist/notification-center.d.ts",
+        "default": "./dist/notification-center.js"
+      },
+      "require": {
+        "types": "./dist/notification-center.d.cts",
+        "default": "./dist/notification-center.cjs"
+      }
+    },
     "./number-input": {
       "import": {
         "types": "./dist/number-input.d.ts",
@@ -399,6 +699,16 @@
       "require": {
         "types": "./dist/number-input.d.cts",
         "default": "./dist/number-input.cjs"
+      }
+    },
+    "./onboarding-checklist": {
+      "import": {
+        "types": "./dist/onboarding-checklist.d.ts",
+        "default": "./dist/onboarding-checklist.js"
+      },
+      "require": {
+        "types": "./dist/onboarding-checklist.d.cts",
+        "default": "./dist/onboarding-checklist.cjs"
       }
     },
     "./otp-input": {
@@ -431,6 +741,26 @@
         "default": "./dist/password-input.cjs"
       }
     },
+    "./permission-matrix": {
+      "import": {
+        "types": "./dist/permission-matrix.d.ts",
+        "default": "./dist/permission-matrix.js"
+      },
+      "require": {
+        "types": "./dist/permission-matrix.d.cts",
+        "default": "./dist/permission-matrix.cjs"
+      }
+    },
+    "./phone-input": {
+      "import": {
+        "types": "./dist/phone-input.d.ts",
+        "default": "./dist/phone-input.js"
+      },
+      "require": {
+        "types": "./dist/phone-input.d.cts",
+        "default": "./dist/phone-input.cjs"
+      }
+    },
     "./popover": {
       "import": {
         "types": "./dist/popover.d.ts",
@@ -441,6 +771,16 @@
         "default": "./dist/popover.cjs"
       }
     },
+    "./pricing-estimator": {
+      "import": {
+        "types": "./dist/pricing-estimator.d.ts",
+        "default": "./dist/pricing-estimator.js"
+      },
+      "require": {
+        "types": "./dist/pricing-estimator.d.cts",
+        "default": "./dist/pricing-estimator.cjs"
+      }
+    },
     "./progress": {
       "import": {
         "types": "./dist/progress.d.ts",
@@ -449,6 +789,26 @@
       "require": {
         "types": "./dist/progress.d.cts",
         "default": "./dist/progress.cjs"
+      }
+    },
+    "./prompt-input": {
+      "import": {
+        "types": "./dist/prompt-input.d.ts",
+        "default": "./dist/prompt-input.js"
+      },
+      "require": {
+        "types": "./dist/prompt-input.d.cts",
+        "default": "./dist/prompt-input.cjs"
+      }
+    },
+    "./prompt-queue": {
+      "import": {
+        "types": "./dist/prompt-queue.d.ts",
+        "default": "./dist/prompt-queue.js"
+      },
+      "require": {
+        "types": "./dist/prompt-queue.d.cts",
+        "default": "./dist/prompt-queue.cjs"
       }
     },
     "./radio-group": {
@@ -481,6 +841,16 @@
         "default": "./dist/reaction-button.cjs"
       }
     },
+    "./reasoning": {
+      "import": {
+        "types": "./dist/reasoning.d.ts",
+        "default": "./dist/reasoning.js"
+      },
+      "require": {
+        "types": "./dist/reasoning.d.cts",
+        "default": "./dist/reasoning.cjs"
+      }
+    },
     "./resizable-panels": {
       "import": {
         "types": "./dist/resizable-panels.d.ts",
@@ -489,6 +859,16 @@
       "require": {
         "types": "./dist/resizable-panels.d.cts",
         "default": "./dist/resizable-panels.cjs"
+      }
+    },
+    "./review-summary": {
+      "import": {
+        "types": "./dist/review-summary.d.ts",
+        "default": "./dist/review-summary.js"
+      },
+      "require": {
+        "types": "./dist/review-summary.d.cts",
+        "default": "./dist/review-summary.cjs"
       }
     },
     "./ripple-button": {
@@ -509,6 +889,16 @@
       "require": {
         "types": "./dist/scroll-area.d.cts",
         "default": "./dist/scroll-area.cjs"
+      }
+    },
+    "./scrub-input": {
+      "import": {
+        "types": "./dist/scrub-input.d.ts",
+        "default": "./dist/scrub-input.js"
+      },
+      "require": {
+        "types": "./dist/scrub-input.d.cts",
+        "default": "./dist/scrub-input.cjs"
       }
     },
     "./segmented-control": {
@@ -541,6 +931,16 @@
         "default": "./dist/separator.cjs"
       }
     },
+    "./share-button": {
+      "import": {
+        "types": "./dist/share-button.d.ts",
+        "default": "./dist/share-button.js"
+      },
+      "require": {
+        "types": "./dist/share-button.d.cts",
+        "default": "./dist/share-button.cjs"
+      }
+    },
     "./shimmer-button": {
       "import": {
         "types": "./dist/shimmer-button.d.ts",
@@ -551,6 +951,16 @@
         "default": "./dist/shimmer-button.cjs"
       }
     },
+    "./shortcut-sheet": {
+      "import": {
+        "types": "./dist/shortcut-sheet.d.ts",
+        "default": "./dist/shortcut-sheet.js"
+      },
+      "require": {
+        "types": "./dist/shortcut-sheet.d.cts",
+        "default": "./dist/shortcut-sheet.cjs"
+      }
+    },
     "./sidebar": {
       "import": {
         "types": "./dist/sidebar.d.ts",
@@ -559,6 +969,16 @@
       "require": {
         "types": "./dist/sidebar.d.cts",
         "default": "./dist/sidebar.cjs"
+      }
+    },
+    "./signature-pad": {
+      "import": {
+        "types": "./dist/signature-pad.d.ts",
+        "default": "./dist/signature-pad.js"
+      },
+      "require": {
+        "types": "./dist/signature-pad.d.cts",
+        "default": "./dist/signature-pad.cjs"
       }
     },
     "./skeleton": {
@@ -591,6 +1011,16 @@
         "default": "./dist/slider.cjs"
       }
     },
+    "./slot-picker": {
+      "import": {
+        "types": "./dist/slot-picker.d.ts",
+        "default": "./dist/slot-picker.js"
+      },
+      "require": {
+        "types": "./dist/slot-picker.d.cts",
+        "default": "./dist/slot-picker.cjs"
+      }
+    },
     "./sortable-list": {
       "import": {
         "types": "./dist/sortable-list.d.ts",
@@ -611,6 +1041,36 @@
         "default": "./dist/spinner.cjs"
       }
     },
+    "./spotlight-tour": {
+      "import": {
+        "types": "./dist/spotlight-tour.d.ts",
+        "default": "./dist/spotlight-tour.js"
+      },
+      "require": {
+        "types": "./dist/spotlight-tour.d.cts",
+        "default": "./dist/spotlight-tour.cjs"
+      }
+    },
+    "./stack-trace": {
+      "import": {
+        "types": "./dist/stack-trace.d.ts",
+        "default": "./dist/stack-trace.js"
+      },
+      "require": {
+        "types": "./dist/stack-trace.d.cts",
+        "default": "./dist/stack-trace.cjs"
+      }
+    },
+    "./status-button": {
+      "import": {
+        "types": "./dist/status-button.d.ts",
+        "default": "./dist/status-button.js"
+      },
+      "require": {
+        "types": "./dist/status-button.d.cts",
+        "default": "./dist/status-button.cjs"
+      }
+    },
     "./stepper": {
       "import": {
         "types": "./dist/stepper.d.ts",
@@ -619,6 +1079,26 @@
       "require": {
         "types": "./dist/stepper.d.cts",
         "default": "./dist/stepper.cjs"
+      }
+    },
+    "./story-viewer": {
+      "import": {
+        "types": "./dist/story-viewer.d.ts",
+        "default": "./dist/story-viewer.js"
+      },
+      "require": {
+        "types": "./dist/story-viewer.d.cts",
+        "default": "./dist/story-viewer.cjs"
+      }
+    },
+    "./subagent-list": {
+      "import": {
+        "types": "./dist/subagent-list.d.ts",
+        "default": "./dist/subagent-list.js"
+      },
+      "require": {
+        "types": "./dist/subagent-list.d.cts",
+        "default": "./dist/subagent-list.cjs"
       }
     },
     "./switch": {
@@ -661,6 +1141,16 @@
         "default": "./dist/tag-input.cjs"
       }
     },
+    "./test-results": {
+      "import": {
+        "types": "./dist/test-results.d.ts",
+        "default": "./dist/test-results.js"
+      },
+      "require": {
+        "types": "./dist/test-results.d.cts",
+        "default": "./dist/test-results.cjs"
+      }
+    },
     "./textarea": {
       "import": {
         "types": "./dist/textarea.d.ts",
@@ -701,6 +1191,16 @@
         "default": "./dist/timeline.cjs"
       }
     },
+    "./timezone-picker": {
+      "import": {
+        "types": "./dist/timezone-picker.d.ts",
+        "default": "./dist/timezone-picker.js"
+      },
+      "require": {
+        "types": "./dist/timezone-picker.d.cts",
+        "default": "./dist/timezone-picker.cjs"
+      }
+    },
     "./toast": {
       "import": {
         "types": "./dist/toast.d.ts",
@@ -721,6 +1221,16 @@
         "default": "./dist/toggle-group.cjs"
       }
     },
+    "./tool-call-card": {
+      "import": {
+        "types": "./dist/tool-call-card.d.ts",
+        "default": "./dist/tool-call-card.js"
+      },
+      "require": {
+        "types": "./dist/tool-call-card.d.cts",
+        "default": "./dist/tool-call-card.cjs"
+      }
+    },
     "./tooltip": {
       "import": {
         "types": "./dist/tooltip.d.ts",
@@ -739,6 +1249,56 @@
       "require": {
         "types": "./dist/tree-view.d.cts",
         "default": "./dist/tree-view.cjs"
+      }
+    },
+    "./usage-meter": {
+      "import": {
+        "types": "./dist/usage-meter.d.ts",
+        "default": "./dist/usage-meter.js"
+      },
+      "require": {
+        "types": "./dist/usage-meter.d.cts",
+        "default": "./dist/usage-meter.cjs"
+      }
+    },
+    "./vanish-input": {
+      "import": {
+        "types": "./dist/vanish-input.d.ts",
+        "default": "./dist/vanish-input.js"
+      },
+      "require": {
+        "types": "./dist/vanish-input.d.cts",
+        "default": "./dist/vanish-input.cjs"
+      }
+    },
+    "./variant-picker": {
+      "import": {
+        "types": "./dist/variant-picker.d.ts",
+        "default": "./dist/variant-picker.js"
+      },
+      "require": {
+        "types": "./dist/variant-picker.d.cts",
+        "default": "./dist/variant-picker.cjs"
+      }
+    },
+    "./week-scheduler": {
+      "import": {
+        "types": "./dist/week-scheduler.d.ts",
+        "default": "./dist/week-scheduler.js"
+      },
+      "require": {
+        "types": "./dist/week-scheduler.d.cts",
+        "default": "./dist/week-scheduler.cjs"
+      }
+    },
+    "./wheel-picker": {
+      "import": {
+        "types": "./dist/wheel-picker.d.ts",
+        "default": "./dist/wheel-picker.js"
+      },
+      "require": {
+        "types": "./dist/wheel-picker.d.cts",
+        "default": "./dist/wheel-picker.cjs"
       }
     },
     "./circular-text": {
@@ -1011,6 +1571,16 @@
         "default": "./dist/cursor-trail.cjs"
       }
     },
+    "./direction-aware-card": {
+      "import": {
+        "types": "./dist/direction-aware-card.d.ts",
+        "default": "./dist/direction-aware-card.js"
+      },
+      "require": {
+        "types": "./dist/direction-aware-card.d.cts",
+        "default": "./dist/direction-aware-card.cjs"
+      }
+    },
     "./dot-globe": {
       "import": {
         "types": "./dist/dot-globe.d.ts",
@@ -1069,6 +1639,26 @@
       "require": {
         "types": "./dist/horizontal-scroll.d.cts",
         "default": "./dist/horizontal-scroll.cjs"
+      }
+    },
+    "./hover-reveal-list": {
+      "import": {
+        "types": "./dist/hover-reveal-list.d.ts",
+        "default": "./dist/hover-reveal-list.js"
+      },
+      "require": {
+        "types": "./dist/hover-reveal-list.d.cts",
+        "default": "./dist/hover-reveal-list.cjs"
+      }
+    },
+    "./image-hotspots": {
+      "import": {
+        "types": "./dist/image-hotspots.d.ts",
+        "default": "./dist/image-hotspots.js"
+      },
+      "require": {
+        "types": "./dist/image-hotspots.d.cts",
+        "default": "./dist/image-hotspots.cjs"
       }
     },
     "./image-trail": {
@@ -1141,6 +1731,26 @@
         "default": "./dist/parallax.cjs"
       }
     },
+    "./path-draw": {
+      "import": {
+        "types": "./dist/path-draw.d.ts",
+        "default": "./dist/path-draw.js"
+      },
+      "require": {
+        "types": "./dist/path-draw.d.cts",
+        "default": "./dist/path-draw.cjs"
+      }
+    },
+    "./perspective-wall": {
+      "import": {
+        "types": "./dist/perspective-wall.d.ts",
+        "default": "./dist/perspective-wall.js"
+      },
+      "require": {
+        "types": "./dist/perspective-wall.d.cts",
+        "default": "./dist/perspective-wall.cjs"
+      }
+    },
     "./pixel-reveal": {
       "import": {
         "types": "./dist/pixel-reveal.d.ts",
@@ -1149,6 +1759,16 @@
       "require": {
         "types": "./dist/pixel-reveal.d.cts",
         "default": "./dist/pixel-reveal.cjs"
+      }
+    },
+    "./presence-cursors": {
+      "import": {
+        "types": "./dist/presence-cursors.d.ts",
+        "default": "./dist/presence-cursors.js"
+      },
+      "require": {
+        "types": "./dist/presence-cursors.d.cts",
+        "default": "./dist/presence-cursors.cjs"
       }
     },
     "./proximity-glow": {
@@ -1161,6 +1781,16 @@
         "default": "./dist/proximity-glow.cjs"
       }
     },
+    "./reading-rail": {
+      "import": {
+        "types": "./dist/reading-rail.d.ts",
+        "default": "./dist/reading-rail.js"
+      },
+      "require": {
+        "types": "./dist/reading-rail.d.cts",
+        "default": "./dist/reading-rail.cjs"
+      }
+    },
     "./reveal": {
       "import": {
         "types": "./dist/reveal.d.ts",
@@ -1169,6 +1799,16 @@
       "require": {
         "types": "./dist/reveal.d.cts",
         "default": "./dist/reveal.cjs"
+      }
+    },
+    "./scratch-reveal": {
+      "import": {
+        "types": "./dist/scratch-reveal.d.ts",
+        "default": "./dist/scratch-reveal.js"
+      },
+      "require": {
+        "types": "./dist/scratch-reveal.d.cts",
+        "default": "./dist/scratch-reveal.cjs"
       }
     },
     "./scroll-progress": {
@@ -1259,6 +1899,16 @@
       "require": {
         "types": "./dist/tilt-card.d.cts",
         "default": "./dist/tilt-card.cjs"
+      }
+    },
+    "./voice-orb": {
+      "import": {
+        "types": "./dist/voice-orb.d.ts",
+        "default": "./dist/voice-orb.js"
+      },
+      "require": {
+        "types": "./dist/voice-orb.d.cts",
+        "default": "./dist/voice-orb.cjs"
       }
     },
     "./zoom-parallax": {
@@ -1471,6 +2121,16 @@
         "default": "./dist/waves.cjs"
       }
     },
+    "./activity-rings": {
+      "import": {
+        "types": "./dist/activity-rings.d.ts",
+        "default": "./dist/activity-rings.js"
+      },
+      "require": {
+        "types": "./dist/activity-rings.d.cts",
+        "default": "./dist/activity-rings.cjs"
+      }
+    },
     "./area-chart": {
       "import": {
         "types": "./dist/area-chart.d.ts",
@@ -1529,6 +2189,16 @@
       "require": {
         "types": "./dist/box-plot.d.cts",
         "default": "./dist/box-plot.cjs"
+      }
+    },
+    "./bullet-chart": {
+      "import": {
+        "types": "./dist/bullet-chart.d.ts",
+        "default": "./dist/bullet-chart.js"
+      },
+      "require": {
+        "types": "./dist/bullet-chart.d.cts",
+        "default": "./dist/bullet-chart.cjs"
       }
     },
     "./bump-chart": {
@@ -1711,6 +2381,16 @@
         "default": "./dist/line-chart.cjs"
       }
     },
+    "./liquid-gauge": {
+      "import": {
+        "types": "./dist/liquid-gauge.d.ts",
+        "default": "./dist/liquid-gauge.js"
+      },
+      "require": {
+        "types": "./dist/liquid-gauge.d.cts",
+        "default": "./dist/liquid-gauge.cjs"
+      }
+    },
     "./live-chart": {
       "import": {
         "types": "./dist/live-chart.d.ts",
@@ -1769,6 +2449,26 @@
       "require": {
         "types": "./dist/radar-chart.d.cts",
         "default": "./dist/radar-chart.cjs"
+      }
+    },
+    "./radial-bar-chart": {
+      "import": {
+        "types": "./dist/radial-bar-chart.d.ts",
+        "default": "./dist/radial-bar-chart.js"
+      },
+      "require": {
+        "types": "./dist/radial-bar-chart.d.cts",
+        "default": "./dist/radial-bar-chart.cjs"
+      }
+    },
+    "./radial-clock": {
+      "import": {
+        "types": "./dist/radial-clock.d.ts",
+        "default": "./dist/radial-clock.js"
+      },
+      "require": {
+        "types": "./dist/radial-clock.d.cts",
+        "default": "./dist/radial-clock.cjs"
       }
     },
     "./ridgeline-chart": {
@@ -1889,6 +2589,16 @@
       "require": {
         "types": "./dist/treemap-chart.d.cts",
         "default": "./dist/treemap-chart.cjs"
+      }
+    },
+    "./waffle-chart": {
+      "import": {
+        "types": "./dist/waffle-chart.d.ts",
+        "default": "./dist/waffle-chart.js"
+      },
+      "require": {
+        "types": "./dist/waffle-chart.d.cts",
+        "default": "./dist/waffle-chart.cjs"
       }
     },
     "./waterfall-chart": {
@@ -2105,7 +2815,9 @@
     "check:dist": "node scripts/check-dist.ts && publint && attw --pack . --profile node16",
     "test:consumer": "node scripts/consumer-test.ts",
     "test:e2e": "playwright test",
-    "clean": "rm -rf dist coverage dashboard/dist",
+    "test:e2e:analytics": "playwright test -c playwright.analytics.config.ts",
+    "analytics:report": "node scripts/analytics-report.ts",
+    "clean": "rm -rf dist coverage dashboard/dist dashboard/dist-e2e",
     "release": "npm run clean && npm run typecheck && npm run lint && npm run test && npm run build && npm run check:dist",
     "prepublishOnly": "npm run build && npm run check:dist"
   },
@@ -2140,6 +2852,7 @@
     "globals": "17.13.0",
     "jsdom": "30.1.3",
     "motion": "12.43.0",
+    "posthog-js": "1.438.12",
     "publint": "0.3.25",
     "react": "19.3.1",
     "react-dom": "19.3.1",

@@ -5,7 +5,7 @@ import type { RegistryEntry, RegistryMeta } from "../registry/types";
 import { BentoCard } from "./bento-card";
 
 /** Literal span classes (never built dynamically). */
-const spanClasses: Record<NonNullable<RegistryMeta["span"]>, string> = {
+export const spanClasses: Record<NonNullable<RegistryMeta["span"]>, string> = {
   "1x1": "",
   "2x1": "sm:col-span-2",
   "1x2": "row-span-2",

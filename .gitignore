@@ -9,5 +9,12 @@ playwright-report/
 .agents/
 .claude/
 .DS_Store
+# Env files hold real keys; only the documented example is tracked.
+.env
+.env.*
+!.env.example
+# Dashboard build used by the analytics e2e suite.
+dashboard/dist-e2e/
+# Generated analytics reports contain usage data.
+analytics/insights-*.md
 .vercel
-.env*

@@ -44,8 +44,19 @@ describe("App shell", () => {
     render(<App />);
     const nav = screen.getByRole("navigation", { name: "Main" });
     const links = within(nav).getAllByRole("link");
-    expect(links).toHaveLength(3 + registryMeta.length);
-    expect(links.slice(0, 3).map((l) => l.textContent)).toEqual(["Introduction", "Installation", "Theming"]);
+    const categories = new Set(registryMeta.map((meta) => meta.category)).size;
+    // Getting started (7 links), the chart chooser, one item-count link per category, then every item.
+    expect(links).toHaveLength(7 + 1 + categories + registryMeta.length);
+    expect(links.slice(0, 7).map((l) => l.querySelector(".truncate")?.textContent)).toEqual([
+      "Introduction",
+      "Developer's Pick",
+      "Installation",
+      "Theming",
+      "Themes",
+      "Privacy",
+      "Templates",
+    ]);
+    expect(within(nav).getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "#/docs/privacy");
     expect(within(nav).getByRole("heading", { name: "Hooks & utils" })).toBeInTheDocument();
   });
 

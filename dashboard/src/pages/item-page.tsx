@@ -18,18 +18,25 @@ import {
 } from "changelui";
 import { cn } from "@pui-src/lib/cn";
 import { useLatestRef } from "@pui-src/lib/use-latest-ref";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ENTRIES } from "../../../scripts/entries";
 import { CodeBlock } from "../components/code-block";
 import { ControlsPanel } from "../components/controls-panel";
+import { DemoErrorBoundary } from "../components/demo-error-boundary";
 import { PropsTable } from "../components/props-table";
+import { analytics } from "../lib/analytics/client";
+import type { ValueType } from "../lib/analytics/events";
 import { CATEGORY_LABELS } from "../lib/nav";
 import { loadItemSources, type ItemSources } from "../lib/sources";
+import { wrapJsx } from "../lib/to-jsx";
 import { registry } from "../registry";
 import type { ControlSpec, ItemModule, RegistryEntry } from "../registry/types";
 import { homeHref, itemHref, navigate, type Tab } from "../router";
 
 type Values = Record<string, unknown>;
+
+/** control_changed is sent at most once per component + prop in this window (sliders fire per step). */
+const CONTROL_THROTTLE_MS = 1500;
 
 function ReplayIcon() {
   return (
@@ -95,8 +102,20 @@ function PreviewTab({
   setValues: (next: Values | null) => void;
 }) {
   const [replay, setReplay] = useState(0);
+  const lastControl = useRef(new Map<string, number>());
   const { Preview } = module;
-  const snippet = module.snippet(values);
+  const controls = module.controls as ControlSpec<Values>[];
+  // Only the prop and its control kind are sent, never the value.
+  const trackControl = (component: string, prop: string, valueType: ValueType) => {
+    const key = `${component}:${prop}`;
+    const now = Date.now();
+    const last = lastControl.current.get(key);
+    if (last !== undefined && now - last < CONTROL_THROTTLE_MS) return;
+    lastControl.current.set(key, now);
+    analytics.track("control_changed", { component, prop, value_type: valueType });
+  };
+  // Long one-line tags go one prop per line (Prettier style), so nothing runs under the copy button.
+  const snippet = wrapJsx(module.snippet(values));
   const isChart = entry.category === "charts";
   return (
     <div className="flex flex-col gap-4">
@@ -132,17 +151,31 @@ function PreviewTab({
             </Tooltip>
           ) : null}
           <div data-testid="preview-root" className="flex w-full min-w-0 items-start justify-center">
-            <Preview key={replay} props={values} />
+            <DemoErrorBoundary component={entry.slug}>
+              <Preview key={replay} props={values} />
+            </DemoErrorBoundary>
           </div>
         </div>
         <ControlsPanel
-          controls={module.controls as ControlSpec<Values>[]}
+          controls={controls}
           values={values}
-          onChange={(prop, value) => setValues({ ...values, [prop]: value })}
-          onReset={() => setValues(null)}
+          onChange={(prop, value) => {
+            setValues({ ...values, [prop]: value });
+            const spec = controls.find((c) => c.prop === prop);
+            if (spec) trackControl(entry.slug, prop, spec.type);
+          }}
+          onReset={() => {
+            setValues(null);
+            analytics.track("controls_reset", { component: entry.slug });
+          }}
         />
       </div>
-      <CodeBlock code={snippet} copyLabel="Copy snippet" data-testid="snippet" />
+      <CodeBlock
+        code={snippet}
+        copyLabel="Copy snippet"
+        data-testid="snippet"
+        analytics={{ snippet: "usage", surface: "item_page", component: entry.slug }}
+      />
       {module.examples && module.examples.length > 0 ? (
         <section aria-labelledby="examples-heading" className="flex flex-col gap-4 pt-4">
           <h2 id="examples-heading" className="text-xl font-semibold tracking-tight">
@@ -158,7 +191,9 @@ function PreviewTab({
                   <h3 className="text-sm font-semibold">{title}</h3>
                   {description ? <p className="text-xs text-pui-muted-foreground">{description}</p> : null}
                 </div>
-                <Demo />
+                <DemoErrorBoundary component={entry.slug}>
+                  <Demo />
+                </DemoErrorBoundary>
               </div>
             ))}
           </div>
@@ -168,7 +203,7 @@ function PreviewTab({
   );
 }
 
-function CodeTab({ state, onRetry }: { state: LoadState<ItemSources>; onRetry: () => void }) {
+function CodeTab({ component, state, onRetry }: { component: string; state: LoadState<ItemSources>; onRetry: () => void }) {
   if (state.status === "loading") return <Skeleton lines={8} />;
   if (state.status === "error") return <ErrorAlert title="Couldn't load source" onRetry={onRetry} />;
   const { ordered, npm } = state.value;
@@ -203,6 +238,7 @@ function CodeTab({ state, onRetry }: { state: LoadState<ItemSources>; onRetry: (
                 variant="outline"
                 tone="neutral"
                 data-testid="copy-source"
+                onCopied={() => analytics.track("code_copied", { component, snippet_kind: "source", surface: "item_page" })}
               />
             </div>
             <CodeBlock code={file.source} copy={false} data-testid="source-code" />
@@ -213,7 +249,14 @@ function CodeTab({ state, onRetry }: { state: LoadState<ItemSources>; onRetry: (
         <div className="flex items-center gap-2 rounded-pui-lg border border-pui-border bg-pui-surface py-1.5 pe-1.5 ps-4 font-mono text-sm">
           <span className="text-pui-muted-foreground">npm deps:</span>
           <code className="min-w-0 flex-1 truncate">{install}</code>
-          <CopyButton value={install} label="Copy npm install command" size="sm" variant="ghost" tone="neutral" />
+          <CopyButton
+            value={install}
+            label="Copy npm install command"
+            size="sm"
+            variant="ghost"
+            tone="neutral"
+            onCopied={() => analytics.track("code_copied", { component, snippet_kind: "install", surface: "item_page" })}
+          />
         </div>
       ) : (
         <p className="text-sm text-pui-muted-foreground">No npm dependencies beyond React.</p>
@@ -229,7 +272,11 @@ export function ItemPage({ entry, tab }: { entry: RegistryEntry; tab: Tab }) {
   const [sourceAttempt, setSourceAttempt] = useState(0);
   const [values, setValues] = useState<Values | null>(null);
   const [importFrom, setImportFrom] = useState<"package" | "subpath">("package");
-  const moduleState = useLoader(() => entry.load().then((m) => m.default), moduleAttempt);
+  const moduleState = useLoader(
+    () => entry.load().then((m) => m.default),
+    moduleAttempt,
+    () => analytics.track("demo_error", { component: entry.slug, phase: "load", error_name: "ChunkLoadError", error_message: "" }),
+  );
   const sourceState = useLoader(() => loadItemSources(file), sourceAttempt, () => toast.danger("Couldn't load source"));
   const itemModule = moduleState.status === "ready" ? moduleState.value : null;
   const usesMotion = sourceState.status === "ready" && sourceState.value.npm.includes("motion");
@@ -303,9 +350,19 @@ export function ItemPage({ entry, tab }: { entry: RegistryEntry; tab: Tab }) {
             </p>
           </div>
           {importFrom === "package" ? (
-            <CodeBlock code={importLine} copyLabel="Copy import" data-testid="import-line" />
+            <CodeBlock
+              code={importLine}
+              copyLabel="Copy import"
+              data-testid="import-line"
+              analytics={{ snippet: "import", surface: "item_page", component: entry.slug }}
+            />
           ) : (
-            <CodeBlock code={subpathLine} copyLabel="Copy subpath import" data-testid="subpath-import-line" />
+            <CodeBlock
+              code={subpathLine}
+              copyLabel="Copy subpath import"
+              data-testid="subpath-import-line"
+              analytics={{ snippet: "import", surface: "item_page", component: entry.slug }}
+            />
           )}
         </div>
       </header>
@@ -325,7 +382,7 @@ export function ItemPage({ entry, tab }: { entry: RegistryEntry; tab: Tab }) {
           )}
         </TabsContent>
         <TabsContent value="code" className="pt-6">
-          <CodeTab state={sourceState} onRetry={() => setSourceAttempt((n) => n + 1)} />
+          <CodeTab component={entry.slug} state={sourceState} onRetry={() => setSourceAttempt((n) => n + 1)} />
         </TabsContent>
       </Tabs>
 

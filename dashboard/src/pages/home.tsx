@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   CopyButton,
   DotPattern,
@@ -13,11 +14,15 @@ import { CATEGORIES } from "../../../scripts/entries";
 import { BentoGrid, PlayAllSwitch } from "../components/bento-grid";
 import { CategoryTiles } from "../components/category-tiles";
 import { PlayAllContext } from "../components/lazy-mini";
+import { PickCard } from "../components/pick-card";
+import { SparkleIcon } from "../components/sparkle-icon";
+import { analytics } from "../lib/analytics/client";
 import { CATEGORY_SHORT, INSTALL_COMMAND } from "../lib/nav";
+import { creativeItems, FEATURED_PICKS, hookFor, PICKS_TITLE } from "../lib/picks";
 import { registry } from "../registry";
 import type { RegistryMeta } from "../registry/types";
 import { templateMeta } from "../registry/templates";
-import { categoryHref, docHref, FILTERS, homeHref, navigate, templatesHref, type Filter } from "../router";
+import { categoryHref, docHref, FILTERS, homeHref, navigate, picksHref, templatesHref, type Filter } from "../router";
 
 const count = (category: RegistryMeta["category"]) => registry.filter((entry) => entry.category === category).length;
 const STAT_LABELS: Record<RegistryMeta["category"], string> = {
@@ -32,6 +37,10 @@ const stats = CATEGORIES.filter((category) => count(category) > 0).map((category
   value: count(category),
   label: STAT_LABELS[category],
 }));
+
+const pickCount = creativeItems(registry).length;
+/** The first three featured picks, teased on home in poster mode. */
+const teaserPicks = FEATURED_PICKS.slice(0, 3).flatMap((slug) => registry.filter((entry) => entry.slug === slug));
 
 /** Categories without items yet (a newly added one) get no filter chip. */
 const VISIBLE_FILTERS = FILTERS.filter((value) => value === "all" || count(value) > 0);
@@ -59,7 +68,14 @@ export function Home({ filter }: { filter: Filter }) {
               $
             </span>
             <code className="min-w-0 flex-1 truncate">{INSTALL_COMMAND}</code>
-            <CopyButton value={INSTALL_COMMAND} label="Copy install command" size="sm" variant="ghost" tone="neutral" />
+            <CopyButton
+              value={INSTALL_COMMAND}
+              label="Copy install command"
+              size="sm"
+              variant="ghost"
+              tone="neutral"
+              onCopied={() => analytics.track("install_command_copied", { surface: "home" })}
+            />
           </div>
           <div className="flex flex-wrap justify-center gap-3">
             <Button asChild size="lg">
@@ -86,6 +102,33 @@ export function Home({ filter }: { filter: Filter }) {
             ))}
           </dl>
         </div>
+      </section>
+
+      <section aria-labelledby="picks-teaser-heading" className="px-4 sm:px-8">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 id="picks-teaser-heading" className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+              <SparkleIcon className="size-5 text-pui-primary-text" />
+              {PICKS_TITLE}
+              <Badge tone="primary" size="sm">
+                New
+              </Badge>
+            </h2>
+            <p className="text-sm text-pui-muted-foreground">The showpieces we reach for first. Hover one to see it move.</p>
+          </div>
+          <Button asChild variant="outline" tone="neutral" className="self-start sm:self-auto">
+            <a href={picksHref()}>Explore all {pickCount} picks</a>
+          </Button>
+        </div>
+        <PlayAllContext.Provider value={false}>
+          <ul aria-label="Featured picks" className="grid auto-rows-[220px] grid-cols-1 gap-4 md:grid-cols-3">
+            {teaserPicks.map((entry, position) => (
+              <li key={entry.slug}>
+                <PickCard entry={entry} position={position} featured surface="home" hook={hookFor(entry)} />
+              </li>
+            ))}
+          </ul>
+        </PlayAllContext.Provider>
       </section>
 
       <section aria-labelledby="categories-heading" className="px-4 sm:px-8">

@@ -79,11 +79,27 @@ export const templateMeta: TemplateMeta[] = [
     isNew: true,
   },
   {
+    slug: "feature-tabs",
+    title: "Feature tabs",
+    group: "Features",
+    description: "Auto-advancing feature tour: tabs grow to show their copy while a progress rail fills, the preview crossfades, and autoplay pauses on hover, focus or the pause button.",
+    keywords: ["features", "tabs", "product tour", "autoplay", "showcase", "progress", "landing"],
+    isNew: true,
+  },
+  {
     slug: "pricing-toggle",
     title: "Pricing toggle",
     group: "Pricing",
     description: "Monthly / yearly switch with a savings badge, rolling prices, plan cards that work as a radio group, and a beam on the popular plan.",
     keywords: ["pricing", "plans", "billing", "toggle", "subscription", "radio"],
+    isNew: true,
+  },
+  {
+    slug: "plan-compare",
+    title: "Plan compare",
+    group: "Pricing",
+    description: "Comparison table with a sticky plan header, an only-show-differences switch that counts what it hides, column focus and a plan switcher on narrow screens.",
+    keywords: ["pricing", "compare", "plans", "table", "features", "differences", "sticky header", "mobile"],
     isNew: true,
   },
   {
@@ -164,6 +180,14 @@ export const templateMeta: TemplateMeta[] = [
     group: "App",
     description: "Full app frame: collapsible sidebar, command palette, KPI stat cards, a deploy heatmap and a sortable orders table with toast-confirmed actions.",
     keywords: ["dashboard", "admin", "app shell", "sidebar", "command palette", "table", "kpi"],
+    isNew: true,
+  },
+  {
+    slug: "saas-metrics",
+    title: "SaaS metrics",
+    group: "App",
+    description: "Revenue dashboard where every panel moves together: one period switch, and a plan picked in the radial plan mix narrows the KPI cards, the stacked MRR chart and the expansion list, plus a radial clock of trial starts.",
+    keywords: ["saas", "metrics", "mrr", "revenue", "analytics", "dashboard", "churn", "kpi", "charts", "subscriptions"],
     isNew: true,
   },
   {

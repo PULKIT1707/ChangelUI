@@ -13,12 +13,16 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  ActivityFeed,
+  AddressInput,
+  AgentPlan,
   Alert,
   Avatar,
   AvatarGroup,
   Badge,
   Breadcrumb,
   BreadcrumbItem,
+  BulkActionBar,
   Button,
   Calendar,
   Card,
@@ -34,9 +38,14 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  ChatMessage,
+  ChatScroller,
   Checkbox,
   Chip,
+  PricingEstimator,
   CircularProgress,
+  ClarifyingQuestions,
+  CodeBlockTabs,
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
@@ -51,12 +60,18 @@ import {
   CommandMenu,
   CommandPage,
   CommandSeparator,
+  CommentsThread,
+  ConsentBanner,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
+  ContextMeter,
   CopyButton,
+  CronEditor,
+  CurrencyInput,
   DatePicker,
+  DeviceFrame,
   Dialog,
   DialogClose,
   DialogContent,
@@ -65,6 +80,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DiffViewer,
   Dock,
   DockItem,
   DockSeparator,
@@ -91,18 +107,37 @@ import {
   DropdownMenuTrigger,
   DynamicIsland,
   DynamicIslandView,
+  EmptyState,
   ExpandableSearch,
+  FeedbackWidget,
   FileDropzone,
+  FilterBar,
+  FormField,
+  HistogramRange,
   HoldToConfirm,
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
   IconButton,
   ImageCompare,
+  ImageCropper,
+  InlineCitation,
+  InlineEdit,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+  JsonViewer,
+  KanbanBoard,
   Kbd,
   Lightbox,
   LightboxTrigger,
+  LogViewer,
+  MarkdownEditor,
+  ModelSelector,
   MorphingDialog,
   MorphingDialogClose,
   MorphingDialogContent,
@@ -118,22 +153,32 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  NotificationCenter,
+  NotificationList,
   NumberInput,
+  OnboardingChecklist,
   OtpInput,
   Pagination,
   PasswordInput,
+  PermissionMatrix,
+  PhoneInput,
   Popover,
   PopoverClose,
   PopoverContent,
   PopoverTrigger,
   Progress,
+  PromptInput,
+  PromptQueue,
   RadioGroup,
   RadioGroupItem,
   Rating,
   ReactionButton,
+  Reasoning,
   ResizablePanels,
+  ReviewSummary,
   RippleButton,
   ScrollArea,
+  ScrubInput,
   SegmentedControl,
   SegmentedControlItem,
   Select,
@@ -144,7 +189,9 @@ import {
   SelectSeparator,
   SelectTrigger,
   Separator,
+  ShareButton,
   ShimmerButton,
+  ShortcutSheet,
   Sidebar,
   SidebarContent,
   SidebarGroup,
@@ -152,15 +199,23 @@ import {
   SidebarItem,
   SidebarProvider,
   SidebarTrigger,
+  SignaturePad,
   Skeleton,
   SlideToConfirm,
   RangeSlider,
   Slider,
+  SlotPicker,
   SortableHandle,
   SortableItem,
   SortableList,
+  Sources,
   Spinner,
+  SpotlightTour,
+  StackTrace,
+  StatusButton,
   Stepper,
+  StoryViewer,
+  SubagentList,
   Switch,
   Table,
   Tabs,
@@ -168,16 +223,24 @@ import {
   TabsList,
   TabsTrigger,
   TagInput,
+  TestResults,
   Textarea,
   ThemeSwitcher,
   ThemeToggle,
   Timeline,
+  TimezonePicker,
   Toaster,
   Toggle,
   ToggleGroup,
   ToggleGroupItem,
+  ToolCallCard,
   Tooltip,
   TreeView,
+  UsageMeter,
+  VanishInput,
+  VariantPicker,
+  WeekScheduler,
+  WheelPicker,
   CircularText,
   FancyUnderline,
   FlipCounter,
@@ -206,12 +269,15 @@ import {
   ClickSpark,
   Confetti,
   CursorTrail,
+  DirectionAwareCard,
   DotGlobe,
   ExpandingCards,
   FlipCard,
   GooeyButton,
   HoloCard,
   HorizontalScroll,
+  HoverRevealList,
+  ImageHotspots,
   ImageTrail,
   Lens,
   Magnetic,
@@ -220,9 +286,14 @@ import {
   PageTransition,
   Parallax,
   ParallaxLayer,
+  PathDraw,
+  PerspectiveWall,
   PixelReveal,
+  PresenceCursors,
   ProximityGlow,
+  ReadingRail,
   Reveal,
+  ScratchReveal,
   ScrollProgress,
   ScrollStack,
   ScrollStackItem,
@@ -234,6 +305,7 @@ import {
   StickerPeel,
   StickyReveal,
   TiltCard,
+  VoiceOrb,
   ZoomParallax,
   AuroraBackground,
   Beams,
@@ -268,12 +340,14 @@ import {
   useScrollVelocity,
   useViewTransition,
   useToast,
+  ActivityRings,
   AreaChart,
   BarChart,
   BarList,
   BarRace,
   BeeswarmChart,
   BoxPlot,
+  BulletChart,
   BumpChart,
   CalendarHeatmap,
   CandlestickChart,
@@ -293,12 +367,15 @@ import {
   HeatmapChart,
   HistogramChart,
   LineChart,
+  LiquidGauge,
   LiveChart,
   MorphChart,
   NetworkGraph,
   ParallelCoordinates,
   PieChart,
   RadarChart,
+  RadialBarChart,
+  RadialClock,
   RidgelineChart,
   SankeyChart,
   ScatterChart,
@@ -311,6 +388,7 @@ import {
   StreamChart,
   SunburstChart,
   TreemapChart,
+  WaffleChart,
   WaterfallChart,
   WhatIfChart,
   YouDrawIt,
@@ -385,6 +463,28 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "ActivityFeed",
+    covers: ["ActivityFeed"],
+    element: (ref) => (
+      <ActivityFeed
+        ref={asRef<HTMLElement>(ref)}
+        now={0}
+        timeZone="UTC"
+        events={[{ id: "a", actor: { id: "u", name: "Ana" }, action: "changed status", changes: [{ field: "Status", from: "Todo", to: "Done" }], at: 0 }]}
+      />
+    ),
+  },
+  {
+    name: "AddressInput",
+    covers: ["AddressInput"],
+    element: (ref) => <AddressInput ref={asRef<HTMLFieldSetElement>(ref)} defaultValue={{ country: "US", city: "Austin" }} />,
+  },
+  {
+    name: "AgentPlan",
+    covers: ["AgentPlan"],
+    element: (ref) => <AgentPlan ref={asRef<HTMLElement>(ref)} steps={[{ id: "a", title: "Step", status: "running", detail: "Working" }]} now={0} />,
+  },
+  {
     name: "Dialog",
     covers: [
       "Dialog",
@@ -421,6 +521,11 @@ export const fixtures: Fixture[] = [
         </DialogContent>
       </Dialog>
     ),
+  },
+  {
+    name: "DiffViewer",
+    covers: ["DiffViewer"],
+    element: (ref) => <DiffViewer ref={asRef<HTMLDivElement>(ref)} oldValue={"a\nb"} newValue={"a\nc"} />,
   },
   {
     name: "Dock",
@@ -519,14 +624,49 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "EmptyState",
+    covers: ["EmptyState"],
+    element: (ref) => <EmptyState ref={asRef<HTMLDivElement>(ref)} title="Sample" />,
+  },
+  {
     name: "ExpandableSearch",
     covers: ["ExpandableSearch"],
     element: (ref) => <ExpandableSearch ref={asRef<HTMLDivElement>(ref)} suggestions={["Sample"]} />,
   },
   {
+    name: "FeedbackWidget",
+    covers: ["FeedbackWidget"],
+    element: (ref) => <FeedbackWidget ref={asRef<HTMLDivElement>(ref)} />,
+  },
+  {
     name: "FileDropzone",
     covers: ["FileDropzone"],
     element: (ref) => <FileDropzone ref={asRef<HTMLDivElement>(ref)} accept="image/*" files={[{ id: "a", name: "a.png", size: 1024, status: "done" }]} />,
+  },
+  {
+    name: "FilterBar",
+    covers: ["FilterBar"],
+    element: (ref) => (
+      <FilterBar
+        ref={asRef<HTMLDivElement>(ref)}
+        fields={[{ id: "status", label: "Status", options: [{ value: "todo", label: "Todo" }] }]}
+        defaultValue={{ query: "", filters: [{ field: "status", operator: "is", values: ["todo"] }] }}
+      />
+    ),
+  },
+  {
+    name: "FormField",
+    covers: ["FormField"],
+    element: (ref) => (
+      <FormField ref={asRef<HTMLDivElement>(ref)} label="Email" hint="We never share it" maxLength={40}>
+        {(control) => <Input {...control} />}
+      </FormField>
+    ),
+  },
+  {
+    name: "HistogramRange",
+    covers: ["HistogramRange"],
+    element: (ref) => <HistogramRange ref={asRef<HTMLDivElement>(ref)} label="Price" data={[12, 18, 18, 25, 31, 40, 44, 52]} />,
   },
   {
     name: "HoldToConfirm",
@@ -560,6 +700,11 @@ export const fixtures: Fixture[] = [
         </PopoverContent>
       </Popover>
     ),
+  },
+  {
+    name: "PricingEstimator",
+    covers: ["PricingEstimator"],
+    element: (ref) => <PricingEstimator ref={asRef<HTMLDivElement>(ref)} tiers={[{ upTo: 100, unitPrice: 0 }, { upTo: null, unitPrice: 1 }]} />,
   },
   {
     name: "Tabs",
@@ -599,6 +744,16 @@ export const fixtures: Fixture[] = [
     element: (ref) => <TagInput ref={asRef<HTMLDivElement>(ref)} listLabel="Tags" inputProps={{ "aria-label": "Add tag" }} defaultValue={["react"]} />,
   },
   {
+    name: "TestResults",
+    covers: ["TestResults"],
+    element: (ref) => (
+      <TestResults
+        ref={asRef<HTMLElement>(ref)}
+        suites={[{ name: "Cart", tests: [{ name: "adds", status: "passed", duration: 12 }, { name: "totals", status: "failed", error: "Wrong total" }] }]}
+      />
+    ),
+  },
+  {
     name: "ThemeToggle",
     covers: ["ThemeToggle"],
     element: (ref) => (
@@ -613,6 +768,11 @@ export const fixtures: Fixture[] = [
         <TimelineItem time="Today" dateTime="2026-01-01" title="Shipped" />
       </Timeline>
     ),
+  },
+  {
+    name: "TimezonePicker",
+    covers: ["TimezonePicker"],
+    element: (ref) => <TimezonePicker ref={asRef<HTMLInputElement>(ref)} aria-label="Time zone" now={0} />,
   },
   {
     name: "Toaster",
@@ -639,6 +799,11 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "ToolCallCard",
+    covers: ["ToolCallCard"],
+    element: (ref) => <ToolCallCard ref={asRef<HTMLElement>(ref)} name="search" status="success" input={{ q: "a" }} output="ok" />,
+  },
+  {
     name: "Tooltip",
     covers: ["Tooltip"],
     element: (ref) => (
@@ -651,6 +816,43 @@ export const fixtures: Fixture[] = [
     name: "TreeView",
     covers: ["TreeView"],
     element: (ref) => <TreeView ref={asRef<HTMLDivElement>(ref)} label="Files" items={[{ id: "a", label: "a", children: [{ id: "b", label: "b" }] }]} defaultExpanded={["a"]} />,
+  },
+  {
+    name: "UsageMeter",
+    covers: ["UsageMeter"],
+    element: (ref) => <UsageMeter ref={asRef<HTMLDivElement>(ref)} label="Storage" value={4} max={10} unit="GB" />,
+  },
+  {
+    name: "VanishInput",
+    covers: ["VanishInput"],
+    element: (ref) => <VanishInput ref={asRef<HTMLInputElement>(ref)} placeholders={["Search docs"]} />,
+  },
+  {
+    name: "VariantPicker",
+    covers: ["VariantPicker"],
+    element: (ref) => (
+      <VariantPicker
+        ref={asRef<HTMLDivElement>(ref)}
+        options={[{ name: "size", label: "Size", values: [{ value: "S" }, { value: "M" }] }]}
+        variants={[{ options: { size: "S" }, stock: 0 }, { options: { size: "M" }, stock: 4 }]}
+      />
+    ),
+  },
+  {
+    name: "WeekScheduler",
+    covers: ["WeekScheduler"],
+    element: (ref) => (
+      <WeekScheduler
+        ref={asRef<HTMLDivElement>(ref)}
+        defaultDate={new Date(2026, 9, 21)}
+        defaultEvents={[{ id: "a", title: "Standup", start: new Date(2026, 9, 21, 9, 30), end: new Date(2026, 9, 21, 10) }]}
+      />
+    ),
+  },
+  {
+    name: "WheelPicker",
+    covers: ["WheelPicker"],
+    element: (ref) => <WheelPicker ref={asRef<HTMLDivElement>(ref)} aria-label="Hour" options={["09", "10", "11"]} />,
   },
   {
     name: "Alert",
@@ -697,6 +899,11 @@ export const fixtures: Fixture[] = [
         <BreadcrumbItem current>Breadcrumb</BreadcrumbItem>
       </Breadcrumb>
     ),
+  },
+  {
+    name: "BulkActionBar",
+    covers: ["BulkActionBar"],
+    element: (ref) => <BulkActionBar ref={asRef<HTMLDivElement>(ref)} position="static" count={2} total={5} onSelectAll={() => {}} onClear={() => {}} actions={[{ id: "a", label: "Archive", onClick: () => {} }]} />,
   },
   {
     name: "Button",
@@ -762,6 +969,21 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "ChatMessage",
+    covers: ["ChatMessage"],
+    element: (ref) => <ChatMessage ref={asRef<HTMLElement>(ref)} content={"Use **bold** and `code`."} onRetry={() => {}} />,
+  },
+  {
+    name: "ChatScroller",
+    covers: ["ChatScroller"],
+    element: (ref) => (
+      <ChatScroller ref={asRef<HTMLDivElement>(ref)} className="h-40">
+        <p key="a">Hello</p>
+        <p key="b">Hi there</p>
+      </ChatScroller>
+    ),
+  },
+  {
     name: "Chip static",
     covers: ["Chip"],
     element: (ref) => <Chip ref={asRef<HTMLElement>(ref)}>Static</Chip>,
@@ -791,6 +1013,20 @@ export const fixtures: Fixture[] = [
       <Chip ref={asRef<HTMLElement>(ref)} defaultSelected onRemove={() => {}} removeLabel="Remove Vue">
         Vue
       </Chip>
+    ),
+  },
+  {
+    name: "ClarifyingQuestions",
+    covers: ["ClarifyingQuestions"],
+    element: (ref) => (
+      <ClarifyingQuestions ref={asRef<HTMLElement>(ref)} questions={[{ id: "q", prompt: "Which plan?", options: [{ value: "a", label: "Starter" }, { value: "b", label: "Pro" }] }]} />
+    ),
+  },
+  {
+    name: "CodeBlockTabs",
+    covers: ["CodeBlockTabs"],
+    element: (ref) => (
+      <CodeBlockTabs ref={asRef<HTMLDivElement>(ref)} tabs={[{ label: "npm", code: "npm i x", language: "bash" }, { label: "pnpm", code: "pnpm add x", language: "bash" }]} />
     ),
   },
   {
@@ -844,6 +1080,23 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "CommentsThread",
+    covers: ["CommentsThread"],
+    element: (ref) => (
+      <CommentsThread
+        ref={asRef<HTMLElement>(ref)}
+        currentUser={{ id: "me", name: "Sam Lee" }}
+        comments={[{ id: "c1", author: { id: "a", name: "Ana Diaz" }, body: "Can we tighten this? @samlee", createdAt: 0 }]}
+        now={60_000}
+      />
+    ),
+  },
+  {
+    name: "ConsentBanner",
+    covers: ["ConsentBanner"],
+    element: (ref) => <ConsentBanner ref={asRef<HTMLDivElement>(ref)} position="inline" />,
+  },
+  {
     name: "ContextMenu",
     covers: ["ContextMenu", "ContextMenuTrigger", "ContextMenuContent", "ContextMenuItem"],
     element: (ref) => (
@@ -858,6 +1111,11 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "ContextMeter",
+    covers: ["ContextMeter", "ContextMeterPanel"],
+    element: (ref) => <ContextMeter ref={asRef<HTMLDivElement>(ref)} defaultOpen used={1000} max={8000} />,
+  },
+  {
     name: "CopyButton",
     covers: ["CopyButton"],
     element: (ref) => <CopyButton ref={asRef<HTMLButtonElement>(ref)} value="npm i changelui" />,
@@ -868,9 +1126,24 @@ export const fixtures: Fixture[] = [
     element: (ref) => <CopyButton ref={asRef<HTMLButtonElement>(ref)} value={() => "x"} showLabel />,
   },
   {
+    name: "CronEditor",
+    covers: ["CronEditor"],
+    element: (ref) => <CronEditor ref={asRef<HTMLDivElement>(ref)} defaultValue="0 9 * * 1-5" />,
+  },
+  {
+    name: "CurrencyInput",
+    covers: ["CurrencyInput"],
+    element: (ref) => <CurrencyInput ref={asRef<HTMLInputElement>(ref)} aria-label="Amount" defaultValue={12.5} locale="en-US" />,
+  },
+  {
     name: "DatePicker",
     covers: ["DatePicker"],
     element: (ref) => <DatePicker ref={asRef<HTMLInputElement>(ref)} aria-label="Date" defaultValue="2024-03-09" />,
+  },
+  {
+    name: "DeviceFrame",
+    covers: ["DeviceFrame"],
+    element: (ref) => <DeviceFrame ref={asRef<HTMLDivElement>(ref)}>Sample</DeviceFrame>,
   },
   {
     name: "IconButton",
@@ -885,6 +1158,26 @@ export const fixtures: Fixture[] = [
     name: "ImageCompare",
     covers: ["ImageCompare"],
     element: (ref) => <ImageCompare ref={asRef<HTMLDivElement>(ref)} before={<div>Before</div>} after={<div>After</div>} />,
+  },
+  {
+    name: "ImageCropper",
+    covers: ["ImageCropper"],
+    element: (ref) => <ImageCropper ref={asRef<HTMLDivElement>(ref)} src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="Sample" />,
+  },
+  {
+    name: "InlineCitation",
+    covers: ["InlineCitation"],
+    element: (ref) => <InlineCitation ref={asRef<HTMLAnchorElement>(ref)} index={1} source={{ title: "Sample", url: "https://example.com" }} />,
+  },
+  {
+    name: "Sources",
+    covers: ["Sources"],
+    element: (ref) => <Sources ref={asRef<HTMLDivElement>(ref)} sources={[{ title: "Sample", url: "https://example.com" }]} />,
+  },
+  {
+    name: "InlineEdit",
+    covers: ["InlineEdit"],
+    element: (ref) => <InlineEdit ref={asRef<HTMLDivElement>(ref)} label="Name" defaultValue="Sample" />,
   },
   {
     name: "Kbd",
@@ -906,6 +1199,21 @@ export const fixtures: Fixture[] = [
         <LightboxTrigger index={1} />
       </Lightbox>
     ),
+  },
+  {
+    name: "LogViewer",
+    covers: ["LogViewer"],
+    element: (ref) => <LogViewer ref={asRef<HTMLElement>(ref)} title="Build" lines={[{ id: 1, time: 0, level: "info", message: "Starting build" }]} />,
+  },
+  {
+    name: "MarkdownEditor",
+    covers: ["MarkdownEditor"],
+    element: (ref) => <MarkdownEditor ref={asRef<HTMLDivElement>(ref)} defaultValue="Some **bold** text" />,
+  },
+  {
+    name: "ModelSelector",
+    covers: ["ModelSelector"],
+    element: (ref) => <ModelSelector ref={asRef<HTMLInputElement>(ref)} aria-label="Model" models={[{ id: "m", name: "Model", provider: "Lab" }]} />,
   },
   {
     name: "MorphingDialog",
@@ -970,9 +1278,24 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "NotificationCenter",
+    covers: ["NotificationCenter"],
+    element: (ref) => <NotificationCenter ref={asRef<HTMLDivElement>(ref)} defaultOpen items={[{ id: "a", title: "Sample", time: 0 }]} now={0} />,
+  },
+  {
+    name: "NotificationList",
+    covers: ["NotificationList"],
+    element: (ref) => <NotificationList ref={asRef<HTMLDivElement>(ref)} items={[{ id: "a", title: "Sample", time: 0 }]} now={0} />,
+  },
+  {
     name: "NumberInput",
     covers: ["NumberInput"],
     element: (ref) => <NumberInput ref={asRef<HTMLDivElement>(ref)} aria-label="Quantity" defaultValue={2} min={0} max={10} />,
+  },
+  {
+    name: "OnboardingChecklist",
+    covers: ["OnboardingChecklist"],
+    element: (ref) => <OnboardingChecklist ref={asRef<HTMLElement>(ref)} steps={[{ id: "a", title: "Sample", done: true }, { id: "b", title: "Next" }]} />,
   },
   {
     name: "OtpInput",
@@ -990,6 +1313,16 @@ export const fixtures: Fixture[] = [
     element: (ref) => <PasswordInput ref={asRef<HTMLInputElement>(ref)} aria-label="Password" strength />,
   },
   {
+    name: "PermissionMatrix",
+    covers: ["PermissionMatrix"],
+    element: (ref) => <PermissionMatrix ref={asRef<HTMLDivElement>(ref)} roles={[{ id: "r", name: "Role" }]} resources={[{ id: "x", name: "Res" }]} />,
+  },
+  {
+    name: "PhoneInput",
+    covers: ["PhoneInput"],
+    element: (ref) => <PhoneInput ref={asRef<HTMLInputElement>(ref)} aria-label="Phone" defaultValue="+14155550132" />,
+  },
+  {
     name: "Progress",
     covers: ["Progress"],
     element: (ref) => <Progress ref={asRef<HTMLDivElement>(ref)} value={42} showValue striped />,
@@ -1005,6 +1338,16 @@ export const fixtures: Fixture[] = [
     element: (ref) => <CircularProgress ref={asRef<HTMLDivElement>(ref)} value={60} showValue />,
   },
   {
+    name: "PromptInput",
+    covers: ["PromptInput"],
+    element: (ref) => <PromptInput ref={asRef<HTMLFormElement>(ref)} defaultValue="Sample" />,
+  },
+  {
+    name: "PromptQueue",
+    covers: ["PromptQueue"],
+    element: (ref) => <PromptQueue ref={asRef<HTMLElement>(ref)} running items={[{ id: "1", text: "Also add tests" }]} onItemsChange={() => {}} />,
+  },
+  {
     name: "RippleButton",
     covers: ["RippleButton"],
     element: (ref) => <RippleButton ref={asRef<HTMLButtonElement>(ref)}>Ripple</RippleButton>,
@@ -1015,14 +1358,31 @@ export const fixtures: Fixture[] = [
     element: (ref) => <ScrollArea ref={asRef<HTMLDivElement>(ref)} label="List">Sample</ScrollArea>,
   },
   {
+    name: "ScrubInput",
+    covers: ["ScrubInput"],
+    element: (ref) => <ScrubInput ref={asRef<HTMLDivElement>(ref)} label="Width" defaultValue={24} unit="px" />,
+  },
+  {
     name: "Separator",
     covers: ["Separator"],
     element: (ref) => <Separator ref={asRef<HTMLDivElement>(ref)} label="OR" decorative={false} />,
   },
   {
+    name: "ShareButton",
+    covers: ["ShareButton"],
+    element: (ref) => <ShareButton ref={asRef<HTMLDivElement>(ref)} url="https://example.com/post" title="Sample" />,
+  },
+  {
     name: "ShimmerButton",
     covers: ["ShimmerButton"],
     element: (ref) => <ShimmerButton ref={asRef<HTMLButtonElement>(ref)}>Shimmer</ShimmerButton>,
+  },
+  {
+    name: "ShortcutSheet",
+    covers: ["ShortcutSheet"],
+    element: (ref) => (
+      <ShortcutSheet ref={asRef<HTMLDivElement>(ref)} defaultOpen groups={[{ title: "General", shortcuts: [{ keys: "mod+k", label: "Search" }] }]} />
+    ),
   },
   {
     name: "Sidebar",
@@ -1045,6 +1405,11 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "SignaturePad",
+    covers: ["SignaturePad"],
+    element: (ref) => <SignaturePad ref={asRef<HTMLDivElement>(ref)} />,
+  },
+  {
     name: "Skeleton",
     covers: ["Skeleton"],
     element: (ref) => <Skeleton ref={asRef<HTMLDivElement>(ref)} shape="text" lines={3} />,
@@ -1060,6 +1425,22 @@ export const fixtures: Fixture[] = [
     element: (ref) => <Spinner ref={asRef<HTMLSpanElement>(ref)} variant="dots" />,
   },
   {
+    name: "SpotlightTour",
+    covers: ["SpotlightTour"],
+    element: () => <SpotlightTour steps={[{ title: "Welcome" }]} />,
+    ref: false,
+  },
+  {
+    name: "StackTrace",
+    covers: ["StackTrace"],
+    element: (ref) => <StackTrace ref={asRef<HTMLElement>(ref)} trace={"Error: boom\n    at run (src/app.ts:1:2)"} />,
+  },
+  {
+    name: "StatusButton",
+    covers: ["StatusButton"],
+    element: (ref) => <StatusButton ref={asRef<HTMLButtonElement>(ref)}>Sample</StatusButton>,
+  },
+  {
     name: "Stepper",
     covers: ["Stepper", "StepperItem"],
     element: (ref) => (
@@ -1067,6 +1448,18 @@ export const fixtures: Fixture[] = [
         <StepperItem title="One" />
         <StepperItem title="Two" />
       </Stepper>
+    ),
+  },
+  {
+    name: "StoryViewer",
+    covers: ["StoryViewer"],
+    element: (ref) => <StoryViewer ref={asRef<HTMLDivElement>(ref)} autoPlay={false} stories={[{ id: "a", label: "Sample", content: "Sample" }]} />,
+  },
+  {
+    name: "SubagentList",
+    covers: ["SubagentList"],
+    element: (ref) => (
+      <SubagentList ref={asRef<HTMLElement>(ref)} now={10_000} agents={[{ id: "a", name: "Researcher", status: "running", startedAt: 0, tokens: 1200 }]} />
     ),
   },
   {
@@ -1082,6 +1475,32 @@ export const fixtures: Fixture[] = [
     element: (ref) => (
       <Input ref={asRef<HTMLInputElement>(ref)} aria-label="Email" placeholder="you@example.com" leadingIcon={<span />} />
     ),
+  },
+  {
+    name: "InputGroup",
+    covers: ["InputGroup", "InputGroupAddon", "InputGroupInput", "InputGroupTextarea", "InputGroupButton", "InputGroupText"],
+    element: (ref) => (
+      <InputGroup ref={asRef<HTMLDivElement>(ref)}>
+        <InputGroupAddon>
+          <InputGroupText>$</InputGroupText>
+        </InputGroupAddon>
+        <InputGroupInput aria-label="Amount" />
+        <InputGroupTextarea aria-label="Note" />
+        <InputGroupAddon align="block-end">
+          <InputGroupButton>Send</InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+    ),
+  },
+  {
+    name: "JsonViewer",
+    covers: ["JsonViewer"],
+    element: (ref) => <JsonViewer ref={asRef<HTMLDivElement>(ref)} data={{ a: 1, b: [true, null] }} />,
+  },
+  {
+    name: "KanbanBoard",
+    covers: ["KanbanBoard"],
+    element: (ref) => <KanbanBoard ref={asRef<HTMLDivElement>(ref)} columns={[{ id: "a", title: "A" }]} defaultCards={[{ id: "1", columnId: "a", title: "Card" }]} />,
   },
   {
     name: "RadioGroup",
@@ -1126,6 +1545,11 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "Reasoning",
+    covers: ["Reasoning"],
+    element: (ref) => <Reasoning ref={asRef<HTMLDivElement>(ref)} duration={3} defaultOpen>Sample</Reasoning>,
+  },
+  {
     name: "ResizablePanels",
     covers: ["ResizablePanels", "ResizablePanel", "ResizableHandle"],
     element: (ref) => (
@@ -1135,6 +1559,11 @@ export const fixtures: Fixture[] = [
         <ResizablePanel>Right</ResizablePanel>
       </ResizablePanels>
     ),
+  },
+  {
+    name: "ReviewSummary",
+    covers: ["ReviewSummary"],
+    element: (ref) => <ReviewSummary ref={asRef<HTMLDivElement>(ref)} counts={{ 5: 40, 4: 12, 3: 3, 2: 1, 1: 2 }} animate={false} />,
   },
   {
     name: "SegmentedControl",
@@ -1193,6 +1622,13 @@ export const fixtures: Fixture[] = [
         name="price"
         marks={[0, { value: 50, label: "50" }, 100]}
       />
+    ),
+  },
+  {
+    name: "SlotPicker",
+    covers: ["SlotPicker"],
+    element: (ref) => (
+      <SlotPicker ref={asRef<HTMLDivElement>(ref)} timeZone="UTC" slots={["2026-10-27T09:00:00Z", "2026-10-27T13:30:00Z", { start: "2026-10-28T10:00:00Z", available: false }]} />
     ),
   },
   {
@@ -1420,6 +1856,15 @@ export const fixtures: Fixture[] = [
     element: (ref) => <CursorTrail ref={asRef<HTMLDivElement>(ref)}>Sample</CursorTrail>,
   },
   {
+    name: "DirectionAwareCard",
+    covers: ["DirectionAwareCard"],
+    element: (ref) => (
+      <DirectionAwareCard ref={asRef<HTMLDivElement>(ref)} overlay="Details">
+        Sample
+      </DirectionAwareCard>
+    ),
+  },
+  {
     name: "DotGlobe",
     covers: ["DotGlobe"],
     element: (ref) => (
@@ -1461,6 +1906,18 @@ export const fixtures: Fixture[] = [
         <div>Panel one</div>
         <div>Panel two</div>
       </HorizontalScroll>
+    ),
+  },
+  {
+    name: "HoverRevealList",
+    covers: ["HoverRevealList"],
+    element: (ref) => <HoverRevealList ref={asRef<HTMLDivElement>(ref)} items={[{ title: "Sample", image: "data:image/gif;base64,R0lGODlhAQABAAAAACw=" }]} />,
+  },
+  {
+    name: "ImageHotspots",
+    covers: ["ImageHotspots"],
+    element: (ref) => (
+      <ImageHotspots ref={asRef<HTMLDivElement>(ref)} src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="Sample room" spots={[{ id: "lamp", x: 30, y: 40, title: "Lamp" }]} />
     ),
   },
   {
@@ -1521,14 +1978,48 @@ export const fixtures: Fixture[] = [
     ),
   },
   {
+    name: "PathDraw",
+    covers: ["PathDraw"],
+    element: (ref) => (
+      <PathDraw ref={asRef<HTMLDivElement>(ref)}>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 12h16" stroke="currentColor" />
+        </svg>
+      </PathDraw>
+    ),
+  },
+  {
+    name: "PerspectiveWall",
+    covers: ["PerspectiveWall"],
+    element: (ref) => <PerspectiveWall ref={asRef<HTMLDivElement>(ref)} items={["Sample"]} />,
+  },
+  {
     name: "PixelReveal",
     covers: ["PixelReveal"],
     element: (ref) => <PixelReveal ref={asRef<HTMLDivElement>(ref)}>Sample</PixelReveal>,
   },
   {
+    name: "PresenceCursors",
+    covers: ["PresenceCursors"],
+    element: (ref) => (
+      <PresenceCursors ref={asRef<HTMLDivElement>(ref)} users={[{ id: "a", name: "Avery", x: 0.4, y: 0.5 }]}>
+        Sample
+      </PresenceCursors>
+    ),
+  },
+  {
     name: "ProximityGlow",
     covers: ["ProximityGlow"],
     element: (ref) => <ProximityGlow ref={asRef<HTMLDivElement>(ref)}>Sample</ProximityGlow>,
+  },
+  {
+    name: "ReadingRail",
+    covers: ["ReadingRail"],
+    element: (ref) => (
+      <ReadingRail ref={asRef<HTMLDivElement>(ref)} sections={[{ id: "fixture-intro", label: "Intro" }]}>
+        <h2 id="fixture-intro">Intro</h2>
+      </ReadingRail>
+    ),
   },
   {
     name: "Reveal",
@@ -1538,6 +2029,11 @@ export const fixtures: Fixture[] = [
         Content
       </Reveal>
     ),
+  },
+  {
+    name: "ScratchReveal",
+    covers: ["ScratchReveal"],
+    element: (ref) => <ScratchReveal ref={asRef<HTMLDivElement>(ref)}>Sample</ScratchReveal>,
   },
   {
     name: "ScrollProgress",
@@ -1616,6 +2112,11 @@ export const fixtures: Fixture[] = [
     name: "TiltCard",
     covers: ["TiltCard"],
     element: (ref) => <TiltCard ref={asRef<HTMLDivElement>(ref)}>Tilt</TiltCard>,
+  },
+  {
+    name: "VoiceOrb",
+    covers: ["VoiceOrb"],
+    element: (ref) => <VoiceOrb ref={asRef<HTMLDivElement>(ref)} />,
   },
   {
     name: "ZoomParallax",
@@ -1735,6 +2236,11 @@ export const fixtures: Fixture[] = [
     element: (ref) => <Waves ref={asRef<HTMLDivElement>(ref)} />,
   },
   {
+    name: "ActivityRings",
+    covers: ["ActivityRings"],
+    element: (ref) => <ActivityRings ref={asRef<HTMLDivElement>(ref)} rings={[{ label: "Move", value: 3, max: 5 }]} />,
+  },
+  {
     name: "AreaChart",
     covers: ["AreaChart"],
     element: (ref) => <AreaChart ref={asRef<HTMLElement>(ref)} data={CHART_ROWS} x="m" series={[{ id: "a", y: "a" }, { id: "b", y: "b" }]} stack="stack" />,
@@ -1763,6 +2269,11 @@ export const fixtures: Fixture[] = [
     name: "BoxPlot",
     covers: ["BoxPlot"],
     element: (ref) => <BoxPlot ref={asRef<HTMLElement>(ref)} data={[{ g: "A", v: 3 }, { g: "A", v: 5 }, { g: "B", v: 8 }, { g: "B", v: 6 }]} group="g" value="v" />,
+  },
+  {
+    name: "BulletChart",
+    covers: ["BulletChart"],
+    element: (ref) => <BulletChart ref={asRef<HTMLDivElement>(ref)} value={62} target={70} />,
   },
   {
     name: "BumpChart",
@@ -1867,6 +2378,11 @@ export const fixtures: Fixture[] = [
     element: (ref) => <LineChart ref={asRef<HTMLElement>(ref)} data={CHART_ROWS} x="m" series={[{ id: "a", y: "a" }]} />,
   },
   {
+    name: "LiquidGauge",
+    covers: ["LiquidGauge"],
+    element: (ref) => <LiquidGauge ref={asRef<HTMLDivElement>(ref)} value={62} />,
+  },
+  {
     name: "LiveChart",
     covers: ["LiveChart"],
     element: (ref) => <LiveChart ref={asRef<HTMLElement>(ref)} data={[{ t: 0, value: 3 }, { t: 1000, value: 5 }, { t: 2000, value: 4 }]} />,
@@ -1895,6 +2411,16 @@ export const fixtures: Fixture[] = [
     name: "RadarChart",
     covers: ["RadarChart"],
     element: (ref) => <RadarChart ref={asRef<HTMLElement>(ref)} data={CHART_ROWS} axis="m" series={[{ id: "a", value: "a" }]} />,
+  },
+  {
+    name: "RadialBarChart",
+    covers: ["RadialBarChart"],
+    element: (ref) => <RadialBarChart ref={asRef<HTMLElement>(ref)} data={[{ label: "A", value: 3 }, { label: "B", value: 5 }]} />,
+  },
+  {
+    name: "RadialClock",
+    covers: ["RadialClock"],
+    element: (ref) => <RadialClock ref={asRef<HTMLElement>(ref)} data={[3, 5, 4, 8, 6, 2]} />,
   },
   {
     name: "RidgelineChart",
@@ -1955,6 +2481,11 @@ export const fixtures: Fixture[] = [
     name: "TreemapChart",
     covers: ["TreemapChart"],
     element: (ref) => <TreemapChart ref={asRef<HTMLElement>(ref)} data={TREE_ROWS} value="v" label="l" />,
+  },
+  {
+    name: "WaffleChart",
+    covers: ["WaffleChart"],
+    element: (ref) => <WaffleChart ref={asRef<HTMLElement>(ref)} data={[{ label: "A", value: 3 }, { label: "B", value: 5 }]} />,
   },
   {
     name: "WaterfallChart",

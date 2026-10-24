@@ -77,6 +77,8 @@ import { getThemeInitScript } from "changelui/theme-script";
 
 <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />`;
 
+const CONFIG_SNIPPET = { snippet: "config", surface: "installation" } as const;
+
 export function Installation() {
   return (
     <article className="mx-auto flex max-w-3xl flex-col gap-10 px-4 py-8 sm:px-8 sm:py-10">
@@ -90,14 +92,14 @@ export function Installation() {
       </header>
 
       <DocSection id="install" title="Install">
-        <CodeBlock code={INSTALL_COMMAND} copyLabel="Copy install command" />
+        <CodeBlock code={INSTALL_COMMAND} copyLabel="Copy install command" analytics={{ snippet: "install", surface: "installation" }} />
         <Prose>
           <p>
             Peer dependencies: <code>react</code> and <code>react-dom</code> 18 or newer, and <code>motion</code> 11.11.17
             through 14.x. The only runtime dependencies are <code>clsx</code> and <code>tailwind-merge</code>.
           </p>
         </Prose>
-        <CodeBlock code={usage} copyLabel="Copy usage example" />
+        <CodeBlock code={usage} copyLabel="Copy usage example" analytics={{ snippet: "usage", surface: "installation" }} />
       </DocSection>
 
       <DocSection id="mode-1" title="Mode 1: Tailwind CSS v4">
@@ -108,7 +110,7 @@ export function Installation() {
             your own <code>--color-primary</code>.
           </p>
         </Prose>
-        <CodeBlock code={mode1} copyLabel="Copy Tailwind setup" />
+        <CodeBlock code={mode1} copyLabel="Copy Tailwind setup" analytics={CONFIG_SNIPPET} />
       </DocSection>
 
       <DocSection id="mode-2" title="Mode 2: prebuilt CSS">
@@ -118,7 +120,7 @@ export function Installation() {
             right without Tailwind's preflight.
           </p>
         </Prose>
-        <CodeBlock code={mode2} copyLabel="Copy CSS import" />
+        <CodeBlock code={mode2} copyLabel="Copy CSS import" analytics={CONFIG_SNIPPET} />
       </DocSection>
 
       <DocSection id="mode-3" title="Mode 3: copy and paste">
@@ -140,15 +142,15 @@ export function Installation() {
             exactly what a registry install gives you, and you pack and install again after a change.
           </p>
         </Prose>
-        <CodeBlock code={localInstall} copyLabel="Copy local install commands" data-testid="local-install-code" />
+        <CodeBlock code={localInstall} copyLabel="Copy local install commands" data-testid="local-install-code" analytics={CONFIG_SNIPPET} />
         <Alert tone="info" title="Symlinked installs: keep one copy of React">
           A symlinked install resolves imports from the library folder, which has its own development copies of React
           and Motion. Add <code className="font-mono">resolve.dedupe</code> so Vite always uses the app's copies;
           without it the page stays blank with "Invalid hook call". On another React major than the library's (React
           19), also point TypeScript at the app's React types. The tarball needs neither.
         </Alert>
-        <CodeBlock code={viteDedupe} copyLabel="Copy Vite dedupe config" data-testid="vite-dedupe-code" />
-        <CodeBlock code={tsPaths} copyLabel="Copy TypeScript paths config" data-testid="ts-paths-code" />
+        <CodeBlock code={viteDedupe} copyLabel="Copy Vite dedupe config" data-testid="vite-dedupe-code" analytics={CONFIG_SNIPPET} />
+        <CodeBlock code={tsPaths} copyLabel="Copy TypeScript paths config" data-testid="ts-paths-code" analytics={CONFIG_SNIPPET} />
         <Prose>
           <p>
             <code>npm run build:watch</code> rebuilds <code>dist/</code> after every change in <code>src/</code>, and the
@@ -167,7 +169,7 @@ export function Installation() {
             own Motion animations follow the same setting.
           </p>
         </Prose>
-        <CodeBlock code={motionConfig} copyLabel="Copy MotionConfig example" />
+        <CodeBlock code={motionConfig} copyLabel="Copy MotionConfig example" analytics={CONFIG_SNIPPET} />
       </DocSection>
 
       <DocSection id="rsc" title="Next.js and React Server Components">
@@ -178,7 +180,7 @@ export function Installation() {
             subpaths; the root entry is a client module.
           </p>
         </Prose>
-        <CodeBlock code={rsc} copyLabel="Copy server example" />
+        <CodeBlock code={rsc} copyLabel="Copy server example" analytics={CONFIG_SNIPPET} />
       </DocSection>
 
       <DocSection id="react-versions" title="React 18 and 19">

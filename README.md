@@ -1,7 +1,5 @@
 # ChangelUI (`changelui`)
 
-Docs and live demos: [changelui.com](https://changelui.com) · Support: [changelui.support@gmail.com](mailto:changelui.support@gmail.com)
-
 Small, accessible React components and effects built with TypeScript, Tailwind CSS v4 and Motion.
 65 items in five groups: 33 components, 8 text effects, 11 motion effects, 6 backgrounds, and
 7 hooks/utilities. Every item has its own subpath, so you import only what you use.
@@ -244,6 +242,84 @@ They lay out with container queries, so they adapt to the column they sit in. A 
 previews it at full, 1280, 768 or 375 px wide in any theme preset, lists the library items it uses
 and has the source to copy. Templates are not published to npm.
 
+### Developer's Pick
+
+`#/picks` is a curated showcase of the creative items: every text effect, motion effect and
+background plus a few showpiece charts (`dashboard/src/lib/picks.ts`), with featured hero tiles,
+live previews, category filter chips (`#/picks?filter=<category>`) and a Surprise me button that
+opens a random pick. It is linked from the sidebar, the command palette and a teaser on home.
+
+### Analytics
+
+The dashboard (never the npm package: `src/` has no telemetry, and check:dist and
+`test/hygiene.test.ts` fail if PostHog shows up there) can send usage analytics to PostHog EU
+Cloud. A consent banner offers Accept and Decline, and `#/docs/privacy` describes what is collected
+and holds the settings to change or withdraw the choice. There are two tiers:
+
+- **Anonymous** (no choice yet, or declined): page views with route and component, palette
+  opens, searches (length and result count; the search text only when nothing was found, trimmed,
+  lowercased, max 40 characters), result picks, code and install command copies, control changes
+  (prop name and type, never the value), theme switches, demo errors (redacted message), 404 paths,
+  Web Vitals (LCP, CLS, FCP, INP; LCP and INP carry the CSS selector of their element, and LCP the
+  image address without its query) and TTFB, the consent choice itself, Developer's Pick usage
+  (the opened pick's slug, category, position, whether it was featured and whether it was on home
+  or the picks page; the filter chosen; the item Surprise me opened), a viewport bucket and the
+  color scheme. PostHog also adds its standard device properties to every event: browser and OS
+  (name and version, from the user agent), device type, browser language, time zone, exact screen
+  and viewport size, the page title, and SDK metadata (library version, event time). No cookies or storage, no person profiles; PostHog counts
+  visitors with a server-side hash that rotates daily. Query strings are stripped from URLs
+  (including the copies inside each Web Vitals metric) and referrers are cut to their origin.
+  PostHog receives the IP address with each request: the "Discard client IP data" setting below
+  tells it to drop it, and the daily hash is computed from request data (IP and user agent).
+- **Full** (accepted): adds an anonymous id in localStorage (no cookies), autocapture with masked
+  text, heatmaps, rage and dead clicks, and session replay with all inputs and text masked.
+  `identify` is never called.
+
+Setup: copy `dashboard/.env.example` to `dashboard/.env.local` (gitignored) and set
+`VITE_POSTHOG_KEY` (the public `phc_` project key) and `VITE_POSTHOG_HOST` (default
+`https://eu.i.posthog.com`, must be https). Without a key analytics is fully off: no banner, no
+PostHog code is loaded and nothing is sent. That is the default for `npm run dev`, the unit tests
+and `npm run test:e2e`. If the browser sends Do Not Track or Global Privacy Control, nothing is
+sent and no banner is shown; the visitor can still opt in on the privacy page.
+
+PostHog project settings to set by hand (the code cannot do this):
+
+- Project settings -> Web analytics -> "Cookieless server hash mode": ON. Without it the
+  anonymous tier's events are dropped.
+- Project settings -> IP data capture -> "Discard client IP data": ON.
+- Session replay: enable recordings, confirm "mask all inputs" and text masking, and set a replay
+  retention period.
+- Data retention: pick the shortest retention that suits you, then replace the
+  `[Site owner: ...]` placeholder in the Retention section of `dashboard/src/pages/privacy.tsx`.
+- Authorized domains / allowed URLs for replay and the toolbar: set them to the custom domain once
+  it exists.
+- Create a personal API key with only the "Query Read" scope for the report script.
+
+Reports: `npm run analytics:report -- --days 7` (with `POSTHOG_PERSONAL_API_KEY` and
+`POSTHOG_PROJECT_ID` set) queries the project and writes `analytics/insights-YYYY-MM-DD.md` with
+top and least-viewed components, zero-result searches, copies, tweaked props, the theme and device
+split, demo errors, slow pages, 404s, Developer's Pick views, clicks and click-through, and ranked
+suggestions. See [analytics/README.md](analytics/README.md).
+`npm run test:e2e:analytics` builds the dashboard with a fake key and a mocked host
+(`https://posthog.e2e.invalid`) and checks the banner, both tiers, DNT/GPC (including an opt-in
+from the privacy settings), URL sanitizing and the sent events; it never contacts PostHog.
+
+Open decisions (the defaults are implemented; change them if you disagree):
+
+- D1: the zero-result search text is sent (max 40 characters). Alternative: send only its length.
+- D2: the report uses `https://eu.posthog.com`. Confirm the project is on EU Cloud, or set
+  `POSTHOG_HOST`.
+- D3: `analytics/insights-*.md` is gitignored. Alternative: commit the reports for history.
+- D4: 404s send a sanitized path (lowercase, `[a-z0-9/._-]`, max 64). Alternative: segment count only.
+- D5: `consent_changed` is sent in the anonymous tier to measure the accept rate. Alternative: drop it.
+- D6: `posthog-js/full/no-external` (no remote scripts, larger lazy chunk) instead of the default
+  entry that loads recorder and Web Vitals scripts from PostHog at runtime.
+- D7: the full tier uses localStorage only. Alternative: `localStorage+cookie` for cross-subdomain
+  tracking.
+
+This setup and the privacy page are a technical description, not legal advice. Have them reviewed
+by a qualified person before you rely on them.
+
 ## Use it in your other projects
 
 Other apps on your machine can use this folder directly, without publishing to npm. Apps load the
@@ -359,8 +435,10 @@ committed, so install with `npm ci`.
 | `npm run remove -- <name>` | Removes an item added with `npm run new` |
 | `npm run check:dist` | Dist inspection, build-path scan, `npm pack` file list, publint and attw |
 | `npm run build:dashboard` | Static dashboard build to `dashboard/dist` |
-| `npm run clean` | Removes `dist`, `coverage` and `dashboard/dist` |
+| `npm run clean` | Removes `dist`, `coverage`, `dashboard/dist` and `dashboard/dist-e2e` |
 | `npm run test:e2e` | Dashboard browser checks (Playwright, Chromium) |
+| `npm run test:e2e:analytics` | Analytics browser checks with a fake key and a mocked PostHog host |
+| `npm run analytics:report -- --days N` | PostHog insights report to `analytics/insights-YYYY-MM-DD.md` (see [Analytics](#analytics)) |
 | `npm run test:consumer` | Packs the library and tests it in two consumer apps |
 | `npm run sync:exports` | Regenerates `package.json` `exports` from `scripts/entries.ts` |
 | `npm run release` | `clean`, then typecheck, lint, test, build and check:dist, with no network needed |
@@ -397,7 +475,11 @@ These need network access the first time and are not part of `release`.
 - `npm run test:e2e` builds the dashboard, serves `vite preview` on 127.0.0.1:4173 and runs
   `e2e/routes.spec.ts` and `e2e/interactions.spec.ts` in a desktop (1440x900) and a mobile
   (360x800) project, selected by the `@desktop` and `@mobile` tags. It takes about 2 minutes, and
-  screenshots land in `dashboard/.screenshots/`.
+  screenshots land in `dashboard/.screenshots/`. It also runs `e2e/analytics-off.spec.ts` (no key:
+  no banner, no PostHog chunk).
+- `npm run test:e2e:analytics` (`playwright.analytics.config.ts`) builds into `dashboard/dist-e2e`
+  with a fake key, serves it on 127.0.0.1:4174 and runs `e2e/analytics.spec.ts` against a mocked
+  PostHog host. Any request to posthog.com fails the run.
 - `npm run test:consumer` builds and packs the library, installs the tarball into temporary copies
   of `test/consumers/*` (needs npm registry access), then runs tsc, vite build, an ESM and CJS SSR
   smoke and `playwright.consumer.config.ts` against `vite preview` on free 127.0.0.1 ports. The
@@ -474,10 +556,6 @@ Run `npm run typecheck`, `npm run lint`, `npm test`, `npm run build` and `npm ru
 `npm run test:e2e` for axe and screenshots of the new page in both themes. When you release it, add
 the subpath to the table under [Imports](#imports) and to `CHANGELOG.md`, and drop `isNew` from its
 meta row a release later.
-
-## Support
-
-Questions, bugs or security reports: [changelui.support@gmail.com](mailto:changelui.support@gmail.com).
 
 ## License
 

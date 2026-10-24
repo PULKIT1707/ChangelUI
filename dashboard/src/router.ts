@@ -2,6 +2,7 @@ import { useSyncExternalStore } from "react";
 import { CATEGORIES, type Category } from "../../scripts/entries";
 import { isChartIntent, type ChartIntent } from "./lib/chart-catalog";
 import { CATEGORY_LABELS } from "./lib/nav";
+import { clampPickFilter, PICKS_TITLE } from "./lib/picks";
 import { CATEGORY_TAGS, OTHER_TAG, tagSlug } from "./lib/tags";
 import { registryMeta } from "./registry/meta";
 import { TEMPLATE_GROUPS, templateMeta } from "./registry/templates";
@@ -11,7 +12,7 @@ import { TEMPLATE_GROUPS, templateMeta } from "./registry/templates";
 
 export type Tab = "preview" | "code";
 export type Filter = "all" | Category;
-export type DocSlug = "installation" | "theming" | "themes";
+export type DocSlug = "installation" | "theming" | "themes" | "privacy";
 
 export type Route =
   | { kind: "home"; tab: Tab; filter: Filter }
@@ -26,12 +27,15 @@ export type Route =
   | { kind: "templates"; group: string | null; tab: Tab; filter: Filter }
   /** `#/templates/<slug>?tab=preview|code`. */
   | { kind: "template"; slug: string; tab: Tab; filter: Filter }
+  /** `#/picks?filter=<category>`: the Developer's Pick showcase; filter is clamped to PICK_FILTERS. */
+  | { kind: "picks"; tab: Tab; filter: Filter }
   | { kind: "notFound"; tab: Tab; filter: Filter };
 
 export const DOC_PAGES: readonly { slug: DocSlug; title: string }[] = [
   { slug: "installation", title: "Installation" },
   { slug: "theming", title: "Theming" },
   { slug: "themes", title: "Themes" },
+  { slug: "privacy", title: "Privacy" },
 ];
 
 export const FILTERS: readonly Filter[] = ["all", ...CATEGORIES];
@@ -74,6 +78,9 @@ export function parseHash(hash: string): Route {
     segments.push(decoded);
   }
   if (segments.length === 0) return { kind: "home", tab, filter };
+  if (segments[0] === "picks") {
+    return segments.length === 1 ? { kind: "picks", tab, filter: clampPickFilter(filter) } : { kind: "notFound", tab, filter };
+  }
   if (segments[0] === "templates") {
     if (segments.length === 1) {
       const groupParam = params.get("group");
@@ -121,6 +128,11 @@ export function chartsHref(intent: ChartIntent | null = null): string {
   return intent === null ? "#/charts" : `#/charts?intent=${intent}`;
 }
 
+/** `#/picks`, optionally narrowed to one category. */
+export function picksHref(filter: Filter = "all"): string {
+  return filter === "all" ? "#/picks" : `#/picks?filter=${filter}`;
+}
+
 /** `#/templates`, optionally narrowed to one group (by tag slug). */
 export function templatesHref(group: string | null = null): string {
   return group === null ? "#/templates" : `#/templates?group=${encodeURIComponent(group)}`;
@@ -138,6 +150,7 @@ export function itemHref(category: Category, slug: string, tab: Tab = "preview")
 export function routeKey(route: Route): string {
   if (route.kind === "category") return `category/${route.category}`;
   if (route.kind === "templates") return "templates";
+  if (route.kind === "picks") return "picks";
   if (route.kind === "template") return `templates/${route.slug}`;
   if (route.kind === "item" || route.kind === "docs") return `${route.category}/${route.slug}`;
   return route.kind;
@@ -155,6 +168,8 @@ export function routeTitle(route: Route): string {
       return registryMeta.find((meta) => meta.slug === route.slug)?.title ?? route.slug;
     case "templates":
       return "Templates";
+    case "picks":
+      return PICKS_TITLE;
     case "template":
       return templateMeta.find((meta) => meta.slug === route.slug)?.title ?? route.slug;
     case "notFound":

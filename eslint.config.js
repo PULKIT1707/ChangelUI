@@ -11,6 +11,7 @@ export default defineConfig([
     ignores: [
       "dist/**",
       "dashboard/dist/**",
+      "dashboard/dist-e2e/**",
       "coverage/**",
       "dashboard/.screenshots/**",
       "test-results/**",

@@ -5,9 +5,11 @@ import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { CATEGORIES, type Category } from "../../../scripts/entries";
 import { CATEGORY_LABELS } from "../lib/nav";
+import { PICKS_TITLE } from "../lib/picks";
 import { groupByTag } from "../lib/tags";
 import { registryMeta } from "../registry/meta";
-import { categoryHref, docHref, homeHref, itemHref, templatesHref, type Route } from "../router";
+import { categoryHref, docHref, homeHref, itemHref, picksHref, templatesHref, type Route } from "../router";
+import { SparkleIcon } from "./sparkle-icon";
 
 interface NavLink {
   key: string;
@@ -16,6 +18,8 @@ interface NavLink {
   /** Lowercased text the filter matches against. */
   haystack: string;
   isNew?: boolean;
+  /** A small sparkle before the label (Developer's Pick). */
+  accent?: boolean;
 }
 
 interface NavGroup {
@@ -44,9 +48,15 @@ const START: NavGroup = {
       label: null,
       links: [
         doc("home", homeHref(), "Introduction"),
+        {
+          ...doc("picks", picksHref(), PICKS_TITLE, true),
+          haystack: "developer's pick developers picks creative showcase featured surprise favorites",
+          accent: true,
+        },
         doc("docs/installation", docHref("installation"), "Installation"),
         doc("docs/theming", docHref("theming"), "Theming"),
         doc("docs/themes", docHref("themes"), "Themes", true),
+        { ...doc("docs/privacy", docHref("privacy"), "Privacy"), haystack: "privacy cookies consent analytics settings docs" },
         { ...doc("templates", templatesHref(), "Templates", true), haystack: "templates blocks sections hero pricing faq landing copy" },
       ],
     },
@@ -101,12 +111,15 @@ function activeKey(route: Route): string | null {
   if (route.kind === "item") return `item/${route.slug}`;
   if (route.kind === "category") return `category/${route.category}`;
   if (route.kind === "templates" || route.kind === "template") return "templates";
+  if (route.kind === "picks") return "picks";
   return null;
 }
 
 /** The group holding the active page, so a collapsed group opens when you land on one of its pages. */
 function activeGroup(route: Route): string | null {
-  if (route.kind === "home" || route.kind === "docs" || route.kind === "templates" || route.kind === "template") return START.key;
+  if (route.kind === "home" || route.kind === "docs" || route.kind === "templates" || route.kind === "template" || route.kind === "picks") {
+    return START.key;
+  }
   if (route.kind === "item" || route.kind === "category") return route.category;
   return null;
 }
@@ -382,7 +395,10 @@ export function NavContent({ route, layoutGroup, onNavigate, filterShortcut = fa
                                           className="absolute inset-0 -z-10 rounded-pui-md bg-pui-muted"
                                         />
                                       ) : null}
-                                      <span className="truncate">{link.label}</span>
+                                      <span className="flex min-w-0 items-center gap-1.5">
+                                        {link.accent ? <SparkleIcon className="size-3.5 shrink-0 text-pui-primary-text" /> : null}
+                                        <span className="truncate">{link.label}</span>
+                                      </span>
                                       {link.isNew ? (
                                         <Badge tone="primary" size="sm">
                                           New

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ControlSpec } from "../registry/types";
-import { toJsx } from "./to-jsx";
+import { toJsx, wrapJsx } from "./to-jsx";
 
 type P = { variant: string; disabled: boolean; loading: boolean; count: number; items: string[]; label: string };
 const defaults: P = { variant: "solid", disabled: false, loading: true, count: 1, items: ["a"], label: "x" };
@@ -36,5 +36,26 @@ describe("toJsx", () => {
       "<Card>\n  <CardTitle>Hi</CardTitle>\n\n  <p>Body</p>\n</Card>",
     );
     expect(toJsx("Button", { ...defaults, disabled: true }, defaults, "Save")).toBe("<Button disabled>\n  Save\n</Button>");
+  });
+});
+
+describe("wrapJsx", () => {
+  it("leaves short lines alone and puts one prop per line on long tags", () => {
+    expect(wrapJsx('<Button size="sm" />')).toBe('<Button size="sm" />');
+    const long = '<HistogramRange label="Price per night" data={prices} value={range} formatValue={(v) => `$${v}`} />';
+    expect(wrapJsx(long)).toBe(
+      ['<HistogramRange', '  label="Price per night"', "  data={prices}", "  value={range}", "  formatValue={(v) => `$${v}`}", "/>"].join("\n"),
+    );
+  });
+  it("keeps indentation and nested braces, and wraps opening tags with children", () => {
+    const code = '<Card>\n  <Chart data={[{ a: 1, b: "x y" }]} title="A long enough title here" description="and a description" open>\n  </Chart>\n</Card>';
+    expect(wrapJsx(code).split("\n").slice(1, 7)).toEqual([
+      "  <Chart",
+      '    data={[{ a: 1, b: "x y" }]}',
+      '    title="A long enough title here"',
+      '    description="and a description"',
+      "    open",
+      "  >",
+    ]);
   });
 });

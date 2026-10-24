@@ -19,6 +19,7 @@ describe("parseHash", () => {
   it("parses docs pages", () => {
     expect(parseHash("#/docs/installation")).toMatchObject({ kind: "docs", category: "docs", slug: "installation" });
     expect(parseHash("#/docs/theming")).toMatchObject({ kind: "docs", slug: "theming" });
+    expect(parseHash("#/docs/privacy")).toMatchObject({ kind: "docs", category: "docs", slug: "privacy" });
     expect(parseHash("#/docs/unknown")).toMatchObject({ kind: "notFound" });
   });
 
@@ -62,6 +63,8 @@ describe("href builders and titles", () => {
     expect(homeHref()).toBe("#/");
     expect(homeHref("effects")).toBe("#/?filter=effects");
     expect(docHref("theming")).toBe("#/docs/theming");
+    expect(docHref("privacy")).toBe("#/docs/privacy");
+    expect(parseHash(docHref("privacy"))).toMatchObject({ kind: "docs", slug: "privacy" });
     expect(itemHref("components", "button")).toBe("#/components/button");
     expect(itemHref("components", "button", "code")).toBe("#/components/button?tab=code");
     expect(parseHash(itemHref("text", "word-rotate", "code"))).toMatchObject({ kind: "item", slug: "word-rotate", tab: "code" });
@@ -73,6 +76,8 @@ describe("href builders and titles", () => {
     expect(routeKey(parseHash("#/?filter=text"))).toBe("home");
     expect(routeTitle(parseHash("#/components/copy-button"))).toBe("CopyButton");
     expect(routeTitle(parseHash("#/docs/installation"))).toBe("Installation");
+    expect(routeTitle(parseHash("#/docs/privacy"))).toBe("Privacy");
+    expect(routeKey(parseHash("#/docs/privacy"))).toBe("docs/privacy");
     expect(routeTitle(parseHash("#/nope"))).toBe("Page not found");
     expect(routeTitle(parseHash("#/"))).toBe("Home");
   });

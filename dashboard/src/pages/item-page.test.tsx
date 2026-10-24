@@ -1,12 +1,14 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "../app";
 import { groupPropDocs } from "../components/props-table";
+import { analytics } from "../lib/analytics/client";
 
 describe("ItemPage", () => {
   afterEach(() => {
     window.location.hash = "";
+    vi.restoreAllMocks();
   });
 
   it("syncs controls to the preview and the snippet in the same render", async () => {
@@ -73,6 +75,22 @@ describe("ItemPage", () => {
     const after = screen.getByTestId("preview-root").firstElementChild;
     expect(after).not.toBeNull();
     expect(after).not.toBe(before);
+  });
+
+  it("tracks control changes throttled, with the control kind but never the value", async () => {
+    window.location.hash = "#/components/button";
+    const user = userEvent.setup();
+    const track = vi.spyOn(analytics, "track");
+    render(<App />);
+    const variant = await screen.findByLabelText("Variant");
+    await user.selectOptions(variant, "outline");
+    await user.selectOptions(variant, "ghost");
+    const changes = track.mock.calls.filter(([name]) => name === "control_changed");
+    expect(changes).toEqual([["control_changed", { component: "button", prop: "variant", value_type: "select" }]]);
+    expect(JSON.stringify(changes)).not.toMatch(/outline|ghost/);
+
+    await user.click(screen.getByRole("button", { name: "Reset" }));
+    expect(track).toHaveBeenCalledWith("controls_reset", { component: "button" });
   });
 
   it("groups compound props by part", () => {

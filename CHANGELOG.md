@@ -15,7 +15,23 @@ All notable changes to `changelui` are listed here. The format follows
   Account, App, Pages).
 - Template gallery cards use a stretched link, so live thumbnails no longer nest links inside the
   card link (fixes a hydration warning).
+- Opt-in PostHog analytics (EU Cloud), off unless `VITE_POSTHOG_KEY` is set: a consent banner with
+  Accept and Decline, cookieless anonymous statistics without consent, and autocapture, heatmaps
+  and masked session replay only after Accept. Do Not Track and Global Privacy Control are
+  respected. A new privacy page (`#/docs/privacy`) lists what is collected and lets visitors change
+  or withdraw their choice. Not part of the npm package.
+- `npm run analytics:report` writes a PostHog insights report (`analytics/insights-YYYY-MM-DD.md`,
+  gitignored) with ranked improvement suggestions.
+- Developer's Pick (`#/picks`): a curated showcase of every text effect, motion effect and
+  background plus five showpiece charts, with featured hero tiles, live previews (paused for
+  reduced motion), category filter chips and a Surprise me button. Linked from the sidebar, the
+  command palette and a home teaser. Anonymous events `devs_pick_card_clicked`,
+  `devs_pick_filter_changed` and `devs_pick_surprise_clicked`, and a Developer's Pick section in
+  the insights report.
+- A crashing demo now shows an error with a Retry button inside its stage (DemoErrorBoundary)
+  instead of blanking the whole dashboard.
 ### Fixed
+- SaaS metrics template: the Plan mix radial names every ring with its value in a legend list instead of crowded ring-start labels that skipped the inner ring.
 - AnimatedBeam and ProximityGlow measure correctly inside a CSS-scaled ancestor (a zoomed preview).
 - Dashboard: every item preview starts at the top of the stage instead of being centered with a large
   gap above tall demos.
@@ -33,12 +49,91 @@ All notable changes to `changelui` are listed here. The format follows
 - BarRace: every key gets its own color, also past the 8 palette tokens, and keeps it as ranks change.
 - NetworkGraph: the default view fits the settled graph; nodes stay at least 6px and labels 11px on screen.
 - GanttChart: header labels shorten to fit their spans and never overlap at any scale or zoom.
+- WeekScheduler: events stay readable in narrow days. Overlaps cascade with a 14px inset and a 72px
+  minimum width once side-by-side columns would drop under 110px, titles lead and wrap while the time
+  line shows only where it fits, a hover / focus card shows the full details, and the first event in
+  range starts fully in view. New `days={3}` and `days={1}` short ranges for small screens.
 
 ### Changed
 
 - WordRotate: new `sizing` prop. The default `"widest"` reserves the longest word's width, so surrounding text no longer reflows or changes height while words rotate. Use `sizing="auto"` for the previous width-animating behaviour.
 
 ### Added
+- VariantPicker: product option swatches and chips that cross out sold-out or impossible combinations, glide a ring to the pick and clear only conflicting picks.
+- SlotPicker: booking time picker with open-count day chips, time-zone-aware morning / afternoon / evening groups at a fixed height and a confirm that morphs to booked.
+- ReviewSummary: fractional-star average with star rows that filter on click, sentiment topic chips and removable filter chips.
+- ImageHotspots: annotated image with pulsing markers, anchored cards that stay in frame, dimming and arrow-key stepping.
+- RadialClock: 24-hour polar histogram or 7 x 24 radial week heatmap with rim bands, a client-only now hand, a peak readout, keyboard bins and onSelect.
+- RadialBarChart: concentric bars on tracks that sweep in on a spring, labels in the gap, per-bar goals, half-arc crops and a meter legend.
+- SaaS metrics template: period switch and a plan picked in the radial plan mix drive KPI cards, a stacked MRR chart, expansion list and a trial-start clock.
+- Dashboard: long one-line usage snippets wrap one prop per line, so they never run under the copy button.
+- ShareButton: one share button that uses the system sheet on phones and elsewhere grows into share targets plus a confirmed copy link; reports via onShare only.
+- HistogramRange: range filter with the value distribution above the track, partial bar fills at the thumbs, a live matching count and typed min / max fields.
+- PathDraw: wrap any inline SVG to trace its strokes in order on view, on mount or with scroll, fading fills in as outlines close.
+- Feature tabs template: auto-advancing feature tour with per-tab progress rails, a crossfading preview, pause on hover/focus and a pause button.
+- ScrubInput: design-tool number field you drag to scrub, with Shift/Alt step modifiers, typed units and math, and a fill track.
+- ShortcutSheet: searchable keyboard shortcut sheet on ? whose key caps light up as you hold them, platform aware.
+- PresenceCursors: multiplayer cursors that glide between socket updates, with status chips, idle dimming, edge pins and an avatar stack.
+- Plan compare template: sticky-header plan table with an only-show-differences switch, column focus and a mobile plan switcher.
+- VanishInput: search or prompt field with rotating example placeholders that dissolves sent text into particles.
+- SpotlightTour: guided tour with a gliding spotlight cutout, a flipping step card, focus trap and arrow keys.
+- DirectionAwareCard: media card whose overlay enters from the edge the pointer came in and leaves the way it exits.
+- HoverRevealList: editorial link list with a pointer-following, tilting, reel-scrolling preview image.
+- UsageMeter: plan quota meter with a stacked breakdown, threshold tones, a projected marker and hatched overage.
+- JsonViewer: keyboard JSON tree with search that opens matches and copy value or JSONPath per row.
+- InlineEdit: click-to-edit text with no layout jump, validation and optimistic save with rollback.
+- PromptInput: AI chat composer with attachments, suggestions, a footer slot and Send that becomes Stop.
+- ReadingRail: sticky tracing beam beside long content with per-section nodes, active label, jump links, arrow-key navigation and a time-left estimate.
+- ScratchReveal: canvas scratch-off cover with a self-clearing threshold, a real Reveal button, inert hidden content and a star burst.
+- PricingEstimator: usage pricing calculator with a tier-scaled slider, graduated or volume math (`estimatePrice`), yearly savings and a breakdown.
+- DeviceFrame: token-themed browser, laptop and phone frames for live UI with an optional scroll-linked 3D tilt.
+- Reasoning: AI thinking disclosure with a live timer that collapses to "Thought for 12 seconds", plus steps.
+- ToolCallCard: agent tool call with status, input/output panes with copy and a Run / Deny approval step.
+- OnboardingChecklist: activation checklist with a progress ring, auto-advancing steps and a finish celebration.
+- EmptyState: no-data, no-results and error states with a fanned card illustration and built-in actions.
+- NotificationCenter: bell with an animated unread badge and a popover inbox; NotificationList for full inbox pages (filter, day groups, read/archive actions).
+- CronEditor: schedule builder that writes cron two-way, with quick picks, a plain-English sentence and the next runs (`parseCron`, `describeCron`, `nextCronRuns`).
+- InlineCitation and Sources: citation chips that preview the quoted source on hover or focus, grouped-source paging and a "Used N sources" strip.
+- DiffViewer: unified or split text diff with word highlights, expandable unchanged runs and a +/− stat bar (`diffLines`).
+- StatusButton: async button that runs idle, pending, success and error from a promise, keeps its width, blocks double submits and announces the result.
+- FeedbackWidget: one-tap face scale with an optional comment and a thank-you in one fixed footprint; the rating fires immediately.
+- ConsentBanner: honest cookie consent with equal-weight Reject and Accept, inline category switches and a reopen pill; stores and tracks nothing.
+- PerspectiveWall: isometric CSS-3D wall of drifting tile columns with a pause button; hover or focus turns a tile face-on.
+- ContextMeter / ContextMeterPanel: AI context-window ring and breakdown with tokens left, next-request cost and a compact action.
+- TimezonePicker: time zone combobox with live local times and offsets, pinned zones and search by city, alias or offset.
+- PermissionMatrix: roles × resources access grid with bulk set, locked roles and a change summary that flags risky grants.
+- KanbanBoard: drag-and-drop and keyboard task board with WIP limits, announcements and custom cards (`moveKanbanCard`).
+- WheelPicker: scroll-snapping 3D wheel (phone-style time picker) with native momentum, commit on settle, disabled rows, arrow, Page and type-ahead keys.
+- StoryViewer: tap-through stories for release notes and onboarding with segmented progress, hold to pause, a pause button and arrow-key navigation.
+- VoiceOrb: living SVG orb for voice and AI assistants that breathes, follows a live audio level, spins while thinking and announces its state.
+- WaffleChart: unit grid for countable shares with icon or shape units, a "3 in 10" readout, largest-remainder rounding and legend spotlight and pinning.
+- BulletChart: compact KPI bar with a target tick, qualitative bands, a last-period ghost, a signed gap and lower-is-better mode.
+- ActivityRings: concentric goal rings that sweep in, run a second lap past 100% with a cap shadow and spotlight from the legend.
+- LiquidGauge: wave-filled gauge whose readout inverts under the liquid, sloshes on change and pauses offscreen and in background tabs.
+- AgentPlan: live agent plan with a gliding active-step highlight, timers, sub-tasks, Retry and Skip (`formatElapsed`).
+- ModelSelector: AI model combobox with capabilities, context, price and speed per row; `requires` disables unfit models.
+- StackTrace: parsed V8/Firefox/Safari stack with the likely cause marked and library frames folded (`parseStackTrace`).
+- BulkActionBar: floating selection toolbar with a live count, Select all N, a More menu and Escape to clear.
+- ClarifyingQuestions: one-at-a-time AI questionnaire with number-key picks, Other, Skip and an editable summary (`describeClarifyingAnswer`).
+- LogViewer: streaming log pane with level counts, search highlight and follow mode that pauses on scroll with a “N new lines” jump.
+- CodeBlockTabs: tabbed code block whose group pick syncs across the page and visits; shell prompts dimmed and left out of copy (`stripShellPrompts`).
+- CommentsThread: review thread with an anchor quote, @mention suggestions, Cmd+Enter, reactions and Resolve that folds to one line.
+- PhoneInput: country picker plus caret-safe national formatting, +code paste detection and an E.164 value (`phoneCountries`, `formatPhone`).
+- CurrencyInput: locale-aware money field with live grouping, either decimal mark, 2.5k shorthand, min/max clamp on blur and minor units (`parseMoney`).
+- SignaturePad: velocity-weighted smooth strokes, Undo/Clear, a typed fallback and SVG/PNG export (`signatureToSVG`).
+- FilterBar: data-table toolbar with search, filter chips (flip operator, values with counts) and saved views with Reset/Save (`filterRows`).
+- InputGroup: one bordered field built from addons (text, icons, buttons, kbd, block toolbars) with a shared focus ring (`InputGroupAddon`, `InputGroupInput`, `InputGroupTextarea`, `InputGroupButton`, `InputGroupText`).
+- ActivityFeed: audit trail with day headings, from → to change chips, comment cards, folded edit bursts and an All / Comments / History switch (`groupActivity`).
+- ChatMessage: AI chat message with a streaming caret, safe light markdown, copyable code blocks, copy / regenerate / thumbs actions and an alternatives switcher (`parseChatMarkdown`).
+- AddressInput: country-aware address fields that reorder and relabel, format and validate postcodes, set autofill tokens and preview the mailing label (`formatAddress`, `validateAddress`, `addressCountries`).
+- MarkdownEditor: markdown field with a toolbar and shortcuts that wrap or unwrap the selection, list and quote continuation, paste-a-URL-to-link and a same-height Write / Preview switch (`applyMarkdownTool`, `continueMarkdownList`).
+- ImageCropper: fixed-frame cropper with drag, wheel and pinch zoom toward the pointer, 90° rotation, aspect presets, a round mask, a thirds grid and keyboard control (`cropImage`).
+- WeekScheduler: week time grid with drag-to-create, move and resize snapped to a step, side-by-side overlaps, a now line, inline naming and full keyboard editing (`weekStart`, `layoutDay`).
+- TestResults: test run report with a status headline, pass / fail / skip bar, filters, failure-first suites, duration bars with slow and flaky marks and Expected / Received blocks (`summarizeTests`, `formatTestDuration`).
+- FormField: label, control, hint and message that validate on blur then live until fixed, with debounced and abortable async checks, a length counter, a fixed-height message slot, setCustomValidity submit blocking and form reset.
+- ChatScroller: chat viewport that follows new content only at the bottom, counts missed messages in a jump pill, keeps its place when older messages are prepended and can trigger loading older history.
+- SubagentList: parallel agent overview with a per-worker segmented bar, live steps, timers and tokens, quiet-agent flags, transcripts and Retry / Stop (`formatTokens`).
+- PromptQueue: queue of follow-up prompts above a composer with drag and keyboard reorder, inline edit, send now, remove, pause / resume and a fold for extra rows.
 - PageTransition: route-agnostic page transitions keyed by `routeKey` with slide, fade, scale, blur,
   flip, wipe, curtain and `view` (View Transitions API, fade fallback) presets, history- or
   `order`-aware direction, inert exiting pages, `focusOnChange` and a 150ms reduced-motion fade.

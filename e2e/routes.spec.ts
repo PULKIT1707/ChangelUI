@@ -19,6 +19,8 @@ const routes: RouteCase[] = [
   { hash: "#/", h1: "Tiny, accessible React", partial: true, shot: "home" },
   { hash: "#/docs/installation", h1: "Installation", shot: "docs-installation" },
   { hash: "#/docs/theming", h1: "Theming", shot: "docs-theming" },
+  { hash: "#/docs/privacy", h1: "Privacy", shot: "docs-privacy" },
+  { hash: "#/picks", h1: "Developer's Pick", shot: "picks" },
   { hash: "#/nope/nope", h1: "Page not found", shot: "unknown-route" },
   ...ENTRIES.filter((e) => e.docs).map((e) => ({
     hash: `#/${e.category}/${e.name}`,

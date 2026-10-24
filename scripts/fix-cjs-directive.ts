@@ -4,11 +4,13 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ENTRIES } from "./entries.ts";
 
 const USE_CLIENT = '"use client";';
 const USE_STRICT = '"use strict";';
 const FIXED = USE_CLIENT + USE_STRICT;
-const SERVER_SAFE = new Set(["cn.cjs", "motion-presets.cjs", "theme-builder.cjs", "theme-script.cjs"]);
+// Server-safe entries (client: false in ENTRIES) ship without the banner.
+const SERVER_SAFE = new Set(ENTRIES.filter((e) => !e.client).map((e) => `${e.name}.cjs`));
 
 export type FixResult = { status: "unchanged" | "fixed"; source: string } | { status: "error"; rule: string };
 

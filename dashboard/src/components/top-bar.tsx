@@ -6,11 +6,14 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  THEME_PRESETS,
   ThemeSwitcher,
   ThemeToggle,
 } from "changelui";
 import { useIsClient } from "@pui-src/lib/use-is-client";
-import { useEffect, useState, type Ref } from "react";
+import { useEffect, useRef, useState, type Ref } from "react";
+import { analytics } from "../lib/analytics/client";
+import type { ThemeMode } from "../lib/analytics/events";
 import { isMac, paletteShortcut } from "../lib/platform";
 import { docHref, homeHref, type Route } from "../router";
 import { MobileNav } from "./mobile-nav";
@@ -101,8 +104,24 @@ function PaletteIcon() {
   );
 }
 
+const PRESET_STORAGE_KEY = "pui-theme-preset";
+
+/** The stored preset name, or "default"; an unknown stored value is never sent as-is. */
+function readStoredPreset(): string {
+  try {
+    const stored = window.localStorage.getItem(PRESET_STORAGE_KEY) ?? "default";
+    return (THEME_PRESETS as readonly string[]).includes(stored) ? stored : "default";
+  } catch {
+    return "default";
+  }
+}
+
 /** Site-wide preset picker: the same storage key the init script reads, so the choice survives reloads. */
 function PresetPicker() {
+  const presetRef = useRef("default");
+  useEffect(() => {
+    presetRef.current = readStoredPreset();
+  }, []);
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -117,7 +136,15 @@ function PresetPicker() {
             Customize
           </a>
         </div>
-        <ThemeSwitcher size="sm" showLabels className="grid grid-cols-5 gap-x-1 gap-y-2" />
+        <ThemeSwitcher
+          size="sm"
+          showLabels
+          className="grid grid-cols-5 gap-x-1 gap-y-2"
+          onValueChange={(to) => {
+            analytics.track("theme_preset_switched", { from: presetRef.current, to });
+            presetRef.current = to;
+          }}
+        />
       </PopoverContent>
     </Popover>
   );
@@ -133,6 +160,10 @@ export interface TopBarProps {
 export function TopBar({ route, onSearch, themeToggleRef }: TopBarProps) {
   const isClient = useIsClient();
   const shortcut = isClient ? paletteShortcut(isMac()) : null;
+  const themeRef = useRef<ThemeMode>("light");
+  useEffect(() => {
+    themeRef.current = document.documentElement.classList.contains("dark") ? "dark" : "light";
+  }, []);
   return (
     <header className="sticky top-0 z-40 h-14 border-b border-pui-border bg-pui-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-pui-background/70">
       <div className="flex h-full items-center gap-2 px-3 sm:px-4">
@@ -166,7 +197,18 @@ export function TopBar({ route, onSearch, themeToggleRef }: TopBarProps) {
           </button>
           <GitHubStar />
           <PresetPicker />
-          <ThemeToggle ref={themeToggleRef} variant="ghost" tone="neutral" size="sm" storageKey="pui-theme" attribute="both" />
+          <ThemeToggle
+            ref={themeToggleRef}
+            variant="ghost"
+            tone="neutral"
+            size="sm"
+            storageKey="pui-theme"
+            attribute="both"
+            onThemeChange={(to) => {
+              analytics.track("theme_switched", { from: themeRef.current, to });
+              themeRef.current = to;
+            }}
+          />
         </div>
       </div>
     </header>

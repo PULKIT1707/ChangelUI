@@ -1,8 +1,12 @@
 import { Skeleton } from "changelui";
+import { useLatestRef } from "@pui-src/lib/use-latest-ref";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { CommandPalette } from "./components/command-palette";
+import { ConsentBanner } from "./components/consent-banner";
 import { Sidebar } from "./components/sidebar";
 import { TopBar } from "./components/top-bar";
+import { analytics } from "./lib/analytics/client";
+import { pageviewProps } from "./lib/analytics/route-props";
 import { NotFound } from "./pages/not-found";
 import { getItem } from "./registry";
 import { getTemplate } from "./registry/templates";
@@ -18,7 +22,9 @@ const pageLoaders = {
   installation: () => import("./pages/installation"),
   theming: () => import("./pages/theming"),
   themes: () => import("./pages/themes"),
+  privacy: () => import("./pages/privacy"),
   templates: () => import("./pages/templates"),
+  picks: () => import("./pages/picks"),
 };
 
 const Home = lazy(() => pageLoaders.home().then((m) => ({ default: m.Home })));
@@ -28,7 +34,9 @@ const ItemPage = lazy(() => pageLoaders.item().then((m) => ({ default: m.ItemPag
 const Installation = lazy(() => pageLoaders.installation().then((m) => ({ default: m.Installation })));
 const Theming = lazy(() => pageLoaders.theming().then((m) => ({ default: m.Theming })));
 const Themes = lazy(() => pageLoaders.themes().then((m) => ({ default: m.Themes })));
+const Privacy = lazy(() => pageLoaders.privacy().then((m) => ({ default: m.Privacy })));
 const TemplatesPage = lazy(() => pageLoaders.templates().then((m) => ({ default: m.TemplatesPage })));
+const PicksPage = lazy(() => pageLoaders.picks().then((m) => ({ default: m.PicksPage })));
 const TemplatePage = lazy(() => pageLoaders.templates().then((m) => ({ default: m.TemplatePage })));
 
 function prefetchPages(): () => void {
@@ -69,6 +77,7 @@ function Page({ route }: { route: Route }) {
       return <CategoryPage key={route.category} category={route.category} tag={route.tag} />;
     case "docs":
       if (route.slug === "themes") return <Themes />;
+      if (route.slug === "privacy") return <Privacy />;
       return route.slug === "installation" ? <Installation /> : <Theming />;
     case "item": {
       const entry = getItem(route.category, route.slug);
@@ -80,9 +89,19 @@ function Page({ route }: { route: Route }) {
       const entry = getTemplate(route.slug);
       return entry ? <TemplatePage key={entry.slug} entry={entry} tab={route.tab} /> : <NotFound />;
     }
+    case "picks":
+      return <PicksPage filter={route.filter} />;
     case "notFound":
       return <NotFound />;
   }
+}
+
+/** True when the element sits in a subtree Suspense hid with an inline `display: none`. */
+function hiddenBySuspense(el: HTMLElement): boolean {
+  for (let node: HTMLElement | null = el; node && node.id !== "content"; node = node.parentElement) {
+    if (node.style.display === "none") return true;
+  }
+  return false;
 }
 
 /**
@@ -91,7 +110,9 @@ function Page({ route }: { route: Route }) {
  */
 function focusHeadingWhenReady(): () => void {
   const focus = () => {
-    const heading = document.querySelector<HTMLElement>("#content h1");
+    // While a lazy page loads, Suspense keeps the previous page in the DOM but hidden (display: none),
+    // so only a rendered h1 counts.
+    const heading = [...document.querySelectorAll<HTMLElement>("#content h1")].find((el) => !hiddenBySuspense(el));
     if (!heading) return false;
     heading.focus({ preventScroll: true });
     return true;
@@ -119,8 +140,12 @@ export function App() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const themeToggleRef = useRef<HTMLButtonElement>(null);
   const lastKey = useRef(key);
+  const routeRef = useLatestRef(route);
 
   useEffect(() => prefetchPages(), []);
+
+  // One pageview per page (routeKey), so ?tab, ?filter and ?tag changes are not counted again.
+  useEffect(() => analytics.pageview(pageviewProps(routeRef.current)), [key, routeRef]);
 
   // On navigation: scroll to the top, update the title and move focus to the page h1. The initial
   // page keeps focus where it is, so the skip link stays the first tab stop. ?tab, ?filter and ?tag
@@ -146,10 +171,11 @@ export function App() {
       >
         Skip to content
       </a>
+      <ConsentBanner />
       <TopBar route={route} onSearch={() => setPaletteOpen(true)} themeToggleRef={themeToggleRef} />
       <Sidebar route={route} />
       <div className="lg:pl-[260px]">
-        <main id="content" tabIndex={-1} className="min-w-0 outline-none">
+        <main id="content" tabIndex={-1} className="min-w-0 pb-[var(--pui-consent-offset,0px)] outline-none">
           <Suspense fallback={<PageSkeleton />}>
             <Page route={route} />
           </Suspense>

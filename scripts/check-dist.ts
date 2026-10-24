@@ -9,7 +9,8 @@ import { gzipSync } from "node:zlib";
 import { ENTRIES } from "./entries.ts";
 import { RELEASED_NAMES } from "./released-entries.ts";
 
-export const SERVER_SAFE = new Set(["cn", "motion-presets", "theme-builder", "theme-script"]);
+/** Server-safe entries (client: false in ENTRIES): no "use client" in their dist files. */
+export const SERVER_SAFE = new Set(ENTRIES.filter((e) => !e.client).map((e) => e.name));
 export const SIZE_LIMIT_BYTES = 20_000;
 const USE_CLIENT = '"use client";';
 
@@ -233,6 +234,14 @@ export function checkNoMachinePaths(dir: string, needles: readonly Needle[] = ma
     machinePathFailures(relative(root, p).split("\\").join("/"), readFileSync(p, "utf8"), needles),
   );
 }
+const TELEMETRY_MARKER = /posthog/i;
+
+/** 8. The published library ships no telemetry: no file under dir mentions posthog (the dashboard's analytics stays out). */
+export function checkNoTelemetry(dir: string = distDir): string[] {
+  return filesUnder(dir)
+    .filter((p) => TELEMETRY_MARKER.test(readFileSync(p, "utf8")))
+    .map((p) => `dist/${relative(dir, p).split("\\").join("/")}: contains telemetry marker "posthog"`);
+}
 const PACK_DOCS = ["README.md", "LICENSE"];
 
 /** Pure: packed file paths outside the allowlist, and README.md or LICENSE missing from the pack. */
@@ -280,6 +289,7 @@ function main(): void {
     ...checkTreeShakingMarker(),
     ...checkStyles(),
     ...checkNoMachinePaths(distDir),
+    ...checkNoTelemetry(distDir),
     ...checkPack(packed),
     ...checkPackMachinePaths(packed),
   ];

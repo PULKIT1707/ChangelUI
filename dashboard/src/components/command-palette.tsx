@@ -11,12 +11,15 @@ import {
 import { useLatestRef } from "@pui-src/lib/use-latest-ref";
 import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type RefObject } from "react";
 import { CATEGORIES, type Category } from "../../../scripts/entries";
+import { analytics } from "../lib/analytics/client";
+import { truncateQuery, type PaletteResultKind } from "../lib/analytics/events";
 import { fuzzySearch } from "../lib/fuzzy";
 import { CATEGORY_LABELS, INSTALL_COMMAND } from "../lib/nav";
+import { creativeItems, PICKS_TITLE } from "../lib/picks";
 import { addRecent, readRecent } from "../lib/recent";
 import { registryMeta } from "../registry/meta";
 import { templateMeta } from "../registry/templates";
-import { categoryHref, docHref, homeHref, itemHref, navigate, templateHref, templatesHref } from "../router";
+import { categoryHref, docHref, homeHref, itemHref, navigate, picksHref, templateHref, templatesHref } from "../router";
 
 type GroupName = "Recent" | "Pages" | "Templates" | "Components" | "Text" | "Effects" | "Backgrounds" | "Charts" | "Hooks" | "Actions";
 
@@ -39,6 +42,7 @@ const categoryGroup: Record<Category, GroupName> = {
   hooks: "Hooks",
 };
 const validSlugs: ReadonlySet<string> = new Set(registryMeta.map((meta) => meta.slug));
+const pickCount = creativeItems(registryMeta).length;
 
 function SearchIcon() {
   return (
@@ -47,6 +51,30 @@ function SearchIcon() {
       <path d="m20 20-3.5-3.5" />
     </svg>
   );
+}
+
+/** Analytics view of a command: item/template/recent target their slug, pages and actions their key. */
+function selectionOf(command: Command): { kind: PaletteResultKind; target: string } {
+  const dash = command.key.indexOf("-");
+  const prefix = command.key.slice(0, dash);
+  const slug = command.key.slice(dash + 1);
+  if (prefix === "item" || prefix === "recent" || prefix === "template") return { kind: prefix, target: slug };
+  return { kind: prefix === "page" ? "page" : "action", target: command.key };
+}
+
+const SEARCH_DEBOUNCE_MS = 800;
+
+/** Opens the privacy page and scrolls its live settings into view once the lazy page has rendered. */
+function openPrivacySettings(): void {
+  navigate(docHref("privacy"));
+  const deadline = Date.now() + 5000;
+  const tick = () => {
+    const target = document.getElementById("privacy-settings");
+    // One more frame, so the shell's scroll-to-top on navigation runs first.
+    if (target) requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+    else if (Date.now() < deadline) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
 }
 
 interface PaletteBodyProps {
@@ -63,6 +91,9 @@ function PaletteBody({ inputRef, close, toggleTheme, copyInstall }: PaletteBodyP
   const [query, setQuery] = useState("");
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [recent, setRecent] = useState(() => readRecent(validSlugs));
+  const lastSearch = useRef("");
+
+  useEffect(() => analytics.track("palette_opened", {}), []);
 
   const openItem = (slug: string, category: Category) => {
     setRecent(addRecent(slug, validSlugs));
@@ -77,12 +108,12 @@ function PaletteBody({ inputRef, close, toggleTheme, copyInstall }: PaletteBodyP
     fields: [meta.slug, meta.category, ...meta.keywords],
     run: () => openItem(meta.slug, meta.category),
   });
-  const page = (key: string, title: string, subtitle: string, href: string): Command => ({
+  const page = (key: string, title: string, subtitle: string, href: string, extraFields: readonly string[] = []): Command => ({
     key: `page-${key}`,
     group: "Pages",
     title,
     subtitle,
-    fields: [key, "docs", "page"],
+    fields: [key, "docs", "page", ...extraFields],
     run: () => {
       close();
       navigate(href);
@@ -102,8 +133,10 @@ function PaletteBody({ inputRef, close, toggleTheme, copyInstall }: PaletteBodyP
 
   const commands: Command[] = [
     page("home", "Introduction", "Overview and gallery", homeHref()),
+    page("picks", PICKS_TITLE, `${pickCount} hand-picked creative showpieces`, picksHref(), ["developer", "creative", "showcase", "featured", "surprise"]),
     page("installation", "Installation", "Install, peers and styling modes", docHref("installation")),
     page("theming", "Theming", "Tokens, dark mode and nested themes", docHref("theming")),
+    page("privacy", "Privacy", "What analytics collects and your choices", docHref("privacy")),
     page("templates", "Templates", `${templateMeta.length} copy-only page sections`, templatesHref()),
     ...templateMeta.map(
       (meta): Command => ({
@@ -131,6 +164,7 @@ function PaletteBody({ inputRef, close, toggleTheme, copyInstall }: PaletteBodyP
     action("copy-install", "Copy install command", INSTALL_COMMAND, copyInstall),
     action("go-installation", "Go to Installation", "Open the installation guide", () => navigate(docHref("installation"))),
     action("go-theming", "Go to Theming", "Open the theming guide", () => navigate(docHref("theming"))),
+    action("privacy-settings", "Privacy settings", "Change or withdraw your analytics choice", openPrivacySettings),
   ];
 
   const trimmed = query.trim();
@@ -159,6 +193,26 @@ function PaletteBody({ inputRef, close, toggleTheme, copyInstall }: PaletteBodyP
     if (activeId) document.getElementById(activeId)?.scrollIntoView({ block: "nearest" });
   }, [activeId]);
 
+  // Debounced search stats: lengths and counts only; the text itself only for zero results (D1).
+  const resultCount = flat.length;
+  useEffect(() => {
+    if (trimmed === "" || trimmed === lastSearch.current) return;
+    const timer = window.setTimeout(() => {
+      lastSearch.current = trimmed;
+      analytics.track("palette_search", {
+        query_length: trimmed.length,
+        result_count: resultCount,
+        ...(resultCount === 0 ? { query: truncateQuery(trimmed) } : {}),
+      });
+    }, SEARCH_DEBOUNCE_MS);
+    return () => window.clearTimeout(timer);
+  }, [trimmed, resultCount]);
+
+  const select = (command: Command, index: number) => {
+    analytics.track("palette_result_selected", { ...selectionOf(command), position: index, query_length: trimmed.length });
+    command.run();
+  };
+
   const move = (delta: number) => {
     if (flat.length === 0 || !active) return;
     const index = flat.indexOf(active);
@@ -175,7 +229,7 @@ function PaletteBody({ inputRef, close, toggleTheme, copyInstall }: PaletteBodyP
       move(-1);
     } else if (event.key === "Enter") {
       event.preventDefault();
-      active?.run();
+      if (active) select(active, flat.indexOf(active));
     }
   };
 
@@ -225,9 +279,9 @@ function PaletteBody({ inputRef, close, toggleTheme, copyInstall }: PaletteBodyP
                     onMouseMove={() => {
                       if (!selected) setActiveKey(command.key);
                     }}
-                    onClick={() => command.run()}
+                    onClick={() => select(command, flat.indexOf(command))}
                     onKeyDown={(event) => {
-                      if (event.key === "Enter") command.run();
+                      if (event.key === "Enter") select(command, flat.indexOf(command));
                     }}
                     className={cn(
                       "flex cursor-pointer flex-col rounded-pui-md px-2 py-2 text-sm",
@@ -290,7 +344,10 @@ export function CommandPalette({ open, onOpenChange, themeToggleRef }: CommandPa
 
   const copyInstall = () => {
     void copy(INSTALL_COMMAND).then((ok) => {
-      if (ok) toast.success("Install command copied", { description: INSTALL_COMMAND });
+      if (ok) {
+        analytics.track("install_command_copied", { surface: "palette" });
+        toast.success("Install command copied", { description: INSTALL_COMMAND });
+      }
       else toast.danger("Couldn't copy the install command");
     });
   };

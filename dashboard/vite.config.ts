@@ -45,11 +45,13 @@ export default defineConfig({
     emptyOutDir: true,
     sourcemap: true,
     // Stable vendor chunks (roadmap I-2): React, Motion and the highlighter cache across releases
-    // and never ride along in the shell or page chunks.
+    // and never ride along in the shell or page chunks. posthog-js is only reached through the
+    // analytics client's dynamic import, so its named chunk loads lazily (and never without a key).
     rolldownOptions: {
       output: {
         codeSplitting: {
           groups: [
+            { name: "posthog", test: /node_modules[\\/](posthog-js|@posthog)[\\/]/, priority: 4 },
             { name: "react", test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/, priority: 3 },
             { name: "motion", test: /node_modules[\\/](motion|framer-motion|motion-dom|motion-utils)[\\/]/, priority: 2 },
             { name: "sugar-high", test: /node_modules[\\/]sugar-high[\\/]/, priority: 1 },

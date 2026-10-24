@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { type Dirent, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
@@ -35,6 +35,27 @@ describe("hygiene over src/", () => {
 
   it.each(sourceFiles)("%s", (file) => {
     expect(checkFile(file, readFileSync(join(root, file), "utf8"), themeVars)).toEqual([]);
+  });
+});
+
+// The dashboard's analytics must never reach the published library (analytics plan, FEAT-001).
+describe("no telemetry in the library", () => {
+  it("no src/ file mentions posthog", () => {
+    const allFiles = (readdirSync(join(root, "src"), { recursive: true, withFileTypes: true }) as Dirent[])
+      .filter((entry) => entry.isFile())
+      .map((entry) => join(entry.parentPath, entry.name));
+    expect(allFiles.length).toBeGreaterThanOrEqual(sourceFiles.length);
+    const offenders = allFiles.filter((file) => /posthog/i.test(readFileSync(file, "utf8")));
+    expect(offenders).toEqual([]);
+  });
+
+  it("posthog-js is not a dependency or peer dependency", () => {
+    const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8")) as Record<
+      string,
+      Record<string, string> | undefined
+    >;
+    expect(Object.keys(pkg.dependencies ?? {})).not.toContain("posthog-js");
+    expect(Object.keys(pkg.peerDependencies ?? {})).not.toContain("posthog-js");
   });
 });
 

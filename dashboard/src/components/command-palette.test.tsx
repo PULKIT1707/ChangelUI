@@ -1,7 +1,8 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useRef, useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { analytics } from "../lib/analytics/client";
 import { RECENT_KEY } from "../lib/recent";
 import { CommandPalette } from "./command-palette";
 
@@ -39,6 +40,7 @@ describe("CommandPalette", () => {
   afterEach(() => {
     window.location.hash = "";
     window.localStorage.clear();
+    vi.restoreAllMocks();
   });
 
   it("opens with Ctrl+K, ranks Button first, opens it with Enter and closes with Escape", async () => {
@@ -103,6 +105,42 @@ describe("CommandPalette", () => {
     await waitFor(() => expect(window.location.hash).toBe("#/docs/theming"));
   });
 
+  it("opens the privacy page and scrolls to the privacy settings", async () => {
+    const user = userEvent.setup();
+    render(<Harness />);
+    let input = await openPalette(user);
+    await user.type(input, "privacy");
+    expect(screen.getAllByRole("option").map(optionTitle)).toEqual(expect.arrayContaining(["Privacy", "Privacy settings"]));
+    await user.click(screen.getAllByRole("option").find((o) => optionTitle(o) === "Privacy") as HTMLElement);
+    await waitFor(() => expect(window.location.hash).toBe("#/docs/privacy"));
+
+    window.location.hash = "";
+    const settings = document.createElement("section");
+    settings.id = "privacy-settings";
+    document.body.append(settings);
+    const scroll = vi.spyOn(settings, "scrollIntoView");
+    try {
+      input = await openPalette(user);
+      await user.type(input, "privacy settings");
+      expect(optionTitle(activeOption(input))).toBe("Privacy settings");
+      await user.keyboard("{Enter}");
+      await waitFor(() => expect(window.location.hash).toBe("#/docs/privacy"));
+      await waitFor(() => expect(scroll).toHaveBeenCalledWith({ block: "start" }));
+    } finally {
+      settings.remove();
+    }
+  });
+
+  it("opens Developer's Pick", async () => {
+    const user = userEvent.setup();
+    render(<Harness />);
+    const input = await openPalette(user);
+    await user.type(input, "developer");
+    expect(optionTitle(activeOption(input))).toBe("Developer's Pick");
+    await user.keyboard("{Enter}");
+    await waitFor(() => expect(window.location.hash).toBe("#/picks"));
+  });
+
   it("copies the install command", async () => {
     const user = userEvent.setup();
     // userEvent.setup() installs its own clipboard stub, so spy on whatever is there now.
@@ -113,5 +151,64 @@ describe("CommandPalette", () => {
     expect(optionTitle(activeOption(input))).toBe("Copy install command");
     await user.keyboard("{Enter}");
     await waitFor(() => expect(writeText).toHaveBeenCalledWith("npm install changelui motion"));
+  });
+
+  describe("analytics", () => {
+    it("tracks palette_opened and debounced searches, with the text only for zero results", async () => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      const track = vi.spyOn(analytics, "track");
+      render(<Harness />);
+      const input = await openPalette(user);
+      expect(track).toHaveBeenCalledWith("palette_opened", {});
+
+      await user.type(input, "ZZZQQQ");
+      const searches = () => track.mock.calls.filter(([name]) => name === "palette_search");
+      // Nothing before the debounce ends, then one event for the final query.
+      expect(searches()).toEqual([]);
+      act(() => vi.advanceTimersByTime(800));
+      expect(searches()).toEqual([["palette_search", { query_length: 6, result_count: 0, query: "zzzqqq" }]]);
+
+      await user.clear(input);
+      await user.type(input, "button");
+      act(() => vi.advanceTimersByTime(800));
+      expect(searches()).toHaveLength(2);
+      const [, props] = searches()[1] ?? [];
+      expect(props).toMatchObject({ query_length: 6 });
+      expect(props).not.toHaveProperty("query");
+      expect((props as { result_count: number }).result_count).toBeGreaterThan(0);
+
+      // The same query again is not reported twice.
+      await user.type(input, " ");
+      act(() => vi.advanceTimersByTime(800));
+      expect(searches()).toHaveLength(2);
+    });
+
+    it("tracks the selected result with its kind, target and position", async () => {
+      const user = userEvent.setup();
+      const track = vi.spyOn(analytics, "track");
+      render(<Harness />);
+      const input = await openPalette(user);
+      await user.type(input, "butt");
+      await user.keyboard("{Enter}");
+      await waitFor(() => expect(window.location.hash).toBe("#/components/button"));
+      expect(track).toHaveBeenCalledWith("palette_result_selected", { kind: "item", target: "button", position: 0, query_length: 4 });
+    });
+
+    it("tracks a copied install command from the palette", async () => {
+      const user = userEvent.setup();
+      const track = vi.spyOn(analytics, "track");
+      render(<Harness />);
+      const input = await openPalette(user);
+      await user.type(input, "copy install");
+      await user.keyboard("{Enter}");
+      await waitFor(() => expect(track).toHaveBeenCalledWith("install_command_copied", { surface: "palette" }));
+      expect(track).toHaveBeenCalledWith("palette_result_selected", {
+        kind: "action",
+        target: "action-copy-install",
+        position: 0,
+        query_length: 12,
+      });
+    });
   });
 });

@@ -17,6 +17,57 @@ function formatProp(name: string, value: unknown): string | null {
   return `${name}={${JSON.stringify(value)}}`;
 }
 
+/** Splits `name="a" b={f({ x: "}" })} c` into attributes, respecting quotes, template literals and nested braces. */
+function splitAttrs(text: string): string[] | null {
+  const out: string[] = [];
+  let start = -1;
+  let depth = 0;
+  let quote: string | null = null;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]!;
+    if (quote) {
+      if (ch === "\\") i++;
+      else if (ch === quote) quote = null;
+      continue;
+    }
+    if (start < 0) {
+      if (/\s/.test(ch)) continue;
+      start = i;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") quote = ch;
+    else if (ch === "{") depth++;
+    else if (ch === "}") depth--;
+    else if (/\s/.test(ch) && depth === 0) {
+      out.push(text.slice(start, i));
+      start = -1;
+    }
+    if (depth < 0) return null;
+  }
+  if (quote || depth !== 0) return null;
+  if (start >= 0) out.push(text.slice(start));
+  return out;
+}
+
+/**
+ * Prettier-style wrap for usage snippets: any single-line opening tag longer than `width`
+ * (`<Name a b c />` or `<Name a b>`) gets one attribute per line. Other lines are untouched.
+ */
+export function wrapJsx(code: string, width = 80): string {
+  return code
+    .split("\n")
+    .map((line) => {
+      if (line.length <= width) return line;
+      const match = /^(\s*)<([A-Za-z][\w.]*)\s+(.*?)\s*(\/?>)$/.exec(line);
+      if (!match) return line;
+      const [, indent = "", name, body = "", close] = match;
+      const attrs = splitAttrs(body);
+      if (!attrs || attrs.length < 2) return line;
+      const inner = attrs.map((attr) => `${indent}  ${attr}`).join("\n");
+      return `${indent}<${name}\n${inner}\n${indent}${close}`;
+    })
+    .join("\n");
+}
+
 /**
  * Generates a JSX snippet that lists only non-default props (design 10.2), in ControlSpec order
  * (remaining props follow in insertion order). Children are indented by 2 spaces.

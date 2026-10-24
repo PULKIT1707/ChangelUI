@@ -1,7 +1,10 @@
 // The pure parts of the dist post-processing and inspection scripts.
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { SourceMapConsumer, SourceMapGenerator } from "source-map-js";
 import { describe, expect, it } from "vitest";
-import { checkReleasedEntries, machineNeedles, machinePathFailures } from "../scripts/check-dist.ts";
+import { checkNoTelemetry, checkReleasedEntries, machineNeedles, machinePathFailures } from "../scripts/check-dist.ts";
 import { relativeCjsMap } from "../scripts/fix-cjs-sourcemaps.ts";
 import { RELEASED_NAMES } from "../scripts/released-entries.ts";
 
@@ -69,5 +72,21 @@ describe("machinePathFailures", () => {
     const code = ":root{} const root = node.parentNode; // node_modules";
     expect(machinePathFailures("a.js", code, machineNeedles("/root", "root"))).toEqual([]);
     expect(machinePathFailures("a.js", code, machineNeedles("/srv/node", "node"))).toEqual([]);
+  });
+});
+
+describe("checkNoTelemetry", () => {
+  it("flags every file that mentions posthog, in nested folders too", () => {
+    const dir = mkdtempSync(join(tmpdir(), "pui-telemetry-"));
+    try {
+      writeFileSync(join(dir, "clean.js"), "export const a = 1;\n");
+      mkdirSync(join(dir, "nested"));
+      writeFileSync(join(dir, "nested", "dirty.js.map"), '{"sources":["../node_modules/PostHog-js/x.js"]}');
+      expect(checkNoTelemetry(dir)).toEqual(['dist/nested/dirty.js.map: contains telemetry marker "posthog"']);
+      rmSync(join(dir, "nested"), { recursive: true });
+      expect(checkNoTelemetry(dir)).toEqual([]);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

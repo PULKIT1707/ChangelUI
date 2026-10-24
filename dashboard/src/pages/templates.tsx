@@ -22,6 +22,7 @@ import { useLatestRef } from "@pui-src/lib/use-latest-ref";
 import { MotionConfig } from "motion/react";
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
 import { CodeBlock } from "../components/code-block";
+import { analytics } from "../lib/analytics/client";
 import { PlayAllSwitch } from "../components/bento-grid";
 import { CATEGORY_LABELS, INSTALL_COMMAND } from "../lib/nav";
 import { tagSlug } from "../lib/tags";
@@ -473,14 +474,22 @@ function CodePane({ entry }: { entry: TemplateEntry }) {
           </li>
           <li>Render it anywhere: it adapts to its container width, so it also works in narrow columns.</li>
         </ol>
-        <CodeBlock code={INSTALL_COMMAND} copyLabel="Copy install command" />
+        <CodeBlock code={INSTALL_COMMAND} copyLabel="Copy install command" analytics={{ snippet: "install", surface: "templates" }} />
       </section>
       <section aria-labelledby="template-source" className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-3">
           <h2 id="template-source" className="text-lg font-semibold tracking-tight">
             <span className="font-mono text-base">{entry.file}</span>
           </h2>
-          <CopyButton value={source} label="Copy template source" showLabel size="sm" variant="outline" tone="neutral" />
+          <CopyButton
+            value={source}
+            label="Copy template source"
+            showLabel
+            size="sm"
+            variant="outline"
+            tone="neutral"
+            onCopied={() => analytics.track("code_copied", { component: entry.slug, snippet_kind: "source", surface: "templates" })}
+          />
         </div>
         <CodeBlock code={source} copy={false} data-testid="template-source" />
       </section>

@@ -19,7 +19,7 @@ import {
 
 const root = join(import.meta.dirname, "..");
 const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8")) as { exports: unknown };
-const SERVER_SAFE = ["cn", "motion-presets", "theme-builder", "theme-script"];
+const SERVER_SAFE = ["chart-scales", "cn", "motion-presets", "theme-builder", "theme-script"];
 const catalog: CatalogInput = {
   root,
   entries: ENTRIES,
